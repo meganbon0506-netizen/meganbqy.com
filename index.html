@@ -1,0 +1,3250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Megan — Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500&family=Caveat:wght@500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f5f2ed;--text:#0f0f0f;--muted:#6b6760;--dim:#b0aca6;
+  --red:#c8362a;--blue:#2046a0;--line:rgba(15,15,15,0.1);--line2:rgba(15,15,15,0.2);
+  --display:'Bebas Neue',sans-serif;--serif:'Instrument Serif',Georgia,serif;
+  --sans:'DM Sans',system-ui,sans-serif;--hand:'Caveat',cursive;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);font-weight:300;line-height:1.7;overflow-x:hidden}
+body::before{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;
+  background-image:url("images/img-001-012dfa1a67.svg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.045'/%3E%3C/svg%3E");
+  opacity:0.5;
+}
+
+/* ── SCROLL CONTAINER ── */
+.scroller{height:100vh;overflow-y:scroll;scroll-snap-type:y mandatory;overflow-x:clip}
+
+/* ── PAGES ── */
+.page{
+  height:100vh;
+  scroll-snap-align:start;
+  scroll-snap-stop:always;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:3rem 4rem;
+  flex-direction:column;
+  position:relative;
+  overflow:visible;
+}
+
+/* ── NAV DOTS ── */
+.nav{position:fixed;right:2rem;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:9px;z-index:500}
+.dot{width:5px;height:5px;border-radius:50%;background:var(--dim);cursor:pointer;transition:all 0.3s;border:none;padding:0;display:block}
+.dot.active{background:var(--red);height:18px;border-radius:3px}
+.dot:hover{background:var(--text)}
+.nav.on-red .dot{background:rgba(255,255,255,0.35)}
+.nav.on-red .dot.active{background:white}
+.nav.on-red .dot:hover{background:rgba(255,255,255,0.8)}
+
+.label{font-size:10px;letter-spacing:0.25em;text-transform:uppercase;color:var(--dim);font-family:var(--sans);margin-bottom:0.75rem;display:block}
+
+/* ═══════════════════════════════════════
+   SECTION 0 — HERO
+═══════════════════════════════════════ */
+.hero-page{
+  flex-direction:row !important;
+  align-items:center !important;
+  justify-content:space-between !important;
+  padding:3rem 0 3rem 4rem !important;
+  gap:2rem;
+  overflow:visible;
+}
+.hero-left{flex:0 0 42%;min-width:0}
+.hero-intro{font-family:'DM Sans',system-ui,sans-serif;font-size:clamp(1.4rem,2.8vw,2.4rem);font-weight:400;color:#3a3a3a;line-height:1.2;margin-bottom:0.1rem}
+.hero-name-new{font-family:'DM Sans',system-ui,sans-serif;font-size:clamp(3.8rem,8vw,7.5rem);font-weight:700;color:var(--red);line-height:0.92;letter-spacing:-0.02em;margin-bottom:1.4rem}
+.hero-sub{font-family:'DM Sans',system-ui,sans-serif;font-size:clamp(0.9rem,1.4vw,1.1rem);font-weight:300;color:#6b6760;line-height:1.6;max-width:380px}
+.scroll-hint{margin-top:2rem;display:flex;align-items:center;gap:0.75rem;font-size:1rem;color:var(--dim);font-family:var(--hand)}
+.scroll-line{width:36px;height:1px;background:var(--dim);transform-origin:left;animation:expandLine 2s ease-in-out infinite}
+@keyframes expandLine{0%,100%{transform:scaleX(0.4);opacity:0.4}50%{transform:scaleX(1);opacity:1}}
+
+/* ── PASSPORT ── */
+.passport-outer{
+  flex:0 0 58%;
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  align-self:stretch;
+  overflow:visible;
+  position:relative;
+  z-index:10;
+}
+.passport-card{
+  width:700px;
+  transform:rotate(4deg) translateY(-15px);
+  transition:transform 0.5s cubic-bezier(0.4,0,0.2,1),
+             width 0.5s cubic-bezier(0.4,0,0.2,1),
+             right 0.5s cubic-bezier(0.4,0,0.2,1);
+  cursor:pointer;
+  filter:drop-shadow(0 6px 24px rgba(15,15,15,0.16)) drop-shadow(0 2px 6px rgba(15,15,15,0.1));
+  position:absolute;
+  right:-20px;
+  transform-origin:right center;
+  z-index:20;
+}
+.passport-outer:hover .passport-card,
+.passport-card.expanded{
+  width:760px;
+  transform:rotate(2deg) translateY(-10px) scale(1.2);
+  right:30px;
+  z-index:50;
+}
+
+/* open book: left page + right page */
+.pp-book{display:flex;border-radius:5px;overflow:hidden}
+
+/* left decorative page */
+.pp-left{
+  width:90px;flex-shrink:0;
+  background:
+    repeating-linear-gradient(45deg,rgba(160,140,100,0.07) 0,rgba(160,140,100,0.07) 1px,transparent 1px,transparent 8px),
+    repeating-linear-gradient(-45deg,rgba(160,140,100,0.07) 0,rgba(160,140,100,0.07) 1px,transparent 1px,transparent 8px),
+    #e4dece;
+  border-right:2px solid rgba(15,15,15,0.13);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:1rem 0;
+  position:relative;
+}
+.pp-left::after{content:'';position:absolute;right:0;top:0;bottom:0;width:10px;background:linear-gradient(to right,transparent,rgba(15,15,15,0.07))}
+.pp-spine{font-family:'Courier New',monospace;font-size:7.5px;letter-spacing:0.2em;color:rgba(15,15,15,0.5);writing-mode:vertical-rl;transform:rotate(180deg);user-select:none}
+.pp-spine-line{width:1px;height:32px;background:rgba(15,15,15,0.12)}
+
+/* right main page */
+.pp-right{
+  flex:1;
+  background:
+    radial-gradient(ellipse at 20% 15%,rgba(215,205,178,0.45) 0%,transparent 55%),
+    radial-gradient(ellipse at 80% 85%,rgba(185,170,138,0.22) 0%,transparent 50%),
+    repeating-linear-gradient(45deg,rgba(160,140,100,0.03) 0,rgba(160,140,100,0.03) 1px,transparent 1px,transparent 10px),
+    repeating-linear-gradient(-45deg,rgba(160,140,100,0.03) 0,rgba(160,140,100,0.03) 1px,transparent 1px,transparent 10px),
+    #ede8dc;
+  display:flex;flex-direction:column;overflow:hidden;
+}
+.pp-topstrip{height:18px;background:repeating-linear-gradient(90deg,rgba(15,15,15,0.04) 0,rgba(15,15,15,0.04) 1px,transparent 1px,transparent 14px);border-bottom:1px solid rgba(15,15,15,0.07);flex-shrink:0}
+.pp-hlabel{font-family:'Courier New',monospace;font-size:10px;letter-spacing:0.28em;color:rgba(15,15,15,0.6);padding:0.5rem 1.4rem 0.15rem;flex-shrink:0}
+
+/* content row */
+.pp-content{display:flex;flex:1;padding:0.5rem 1.4rem 0.6rem;gap:1.2rem;position:relative;min-height:0}
+
+/* photo — full height left col */
+.pp-photo-col{flex-shrink:0;width:180px;display:flex;flex-direction:column;align-items:center}
+.pp-photo{
+  width:180px;height:230px;min-height:230px;max-height:230px;
+  background:#ccc9bf;border:1px solid rgba(15,15,15,0.18);
+  position:relative;overflow:hidden;cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  transition:border-color 0.2s;
+}
+.pp-photo:hover{border-color:rgba(15,15,15,0.45)}
+.pp-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:none}
+.pp-photo-hint{font-family:'Courier New',monospace;font-size:9px;letter-spacing:0.05em;text-align:center;color:rgba(15,15,15,0.6);line-height:1.5;padding:0 5px}
+
+/* fields col */
+.pp-fields{flex:1;min-width:0;position:relative}
+.pp-chip{position:absolute;top:0;right:0;width:28px;height:20px;border:1px solid rgba(100,80,50,0.38);border-radius:2px;background:rgba(100,80,50,0.07);display:flex;align-items:center;justify-content:center}
+.pp-chip-i{width:16px;height:11px;border:1px solid rgba(100,80,50,0.32);border-radius:1px}
+
+.pp-f{margin-bottom:0.55rem}
+.pp-fl{font-family:'Courier New',monospace;font-size:9px;letter-spacing:0.22em;color:rgba(15,15,15,0.65);margin-bottom:3px}
+.pp-fv{font-family:'Courier New',monospace;font-size:14px;letter-spacing:0.055em;color:rgba(15,15,15,0.95);background:white;padding:3px 8px;display:inline-block;line-height:1.3}
+.pp-fv.big{font-size:17px;font-weight:700;letter-spacing:0.07em;display:block}
+.pp-rule{height:1px;background:rgba(15,15,15,0.1);margin:0.5rem 0}
+.pp-edu{margin-bottom:0.35rem}
+.pp-edu-d{font-family:'Courier New',monospace;font-size:11px;letter-spacing:0.04em;color:rgba(15,15,15,0.95);background:white;padding:3px 8px;display:inline-block;line-height:1.3}
+.pp-edu-i{font-family:'Courier New',monospace;font-size:10px;letter-spacing:0.04em;color:rgba(15,15,15,0.7);background:white;padding:2px 8px;display:inline-block;margin-top:1px}
+
+/* stamp — bottom right, angled */
+.pp-stamp{margin-top:0.5rem;transform:rotate(-6deg);transform-origin:center center;display:inline-block}
+.pp-stamp-box{border:2px solid rgba(175,55,45,0.5);border-radius:3px;padding:0.3rem 0.6rem;text-align:center;min-width:108px}
+.pp-stamp-country{font-family:'Courier New',monospace;font-size:11px;letter-spacing:0.14em;color:rgba(175,55,45,0.82);font-weight:700;line-height:1.3}
+.pp-stamp-sub{font-family:'Courier New',monospace;font-size:7.5px;letter-spacing:0.1em;color:rgba(175,55,45,0.6);line-height:1.5}
+.pp-stamp-date{font-family:'Courier New',monospace;font-size:8px;letter-spacing:0.05em;color:rgba(175,55,45,0.68);margin-top:1px}
+.pp-stamp-flight{font-family:'Courier New',monospace;font-size:11px;letter-spacing:0.1em;color:rgba(175,55,45,0.78);font-weight:700}
+.pp-stamp-planes{font-size:9px;color:rgba(175,55,45,0.45);display:flex;justify-content:space-between;margin:1px 0}
+
+/* MRZ */
+.pp-mrz{background:rgba(15,15,15,0.04);border-top:1px solid rgba(15,15,15,0.09);padding:0.35rem 1.4rem;font-family:'Courier New',monospace;font-size:8.5px;letter-spacing:0.06em;color:rgba(15,15,15,0.6);line-height:1.7;white-space:nowrap;overflow:hidden;flex-shrink:0}
+
+.pp-hint{text-align:center;margin-top:0.4rem;font-family:var(--hand);font-size:0.8rem;color:rgba(15,15,15,0.28);transition:opacity 0.3s}
+.passport-outer:hover .pp-hint{opacity:0}
+
+/* ═══════════════════════════════════════
+   SECTION 1 — PAPER CARDS
+═══════════════════════════════════════ */
+.paper-cards{display:flex;gap:2.5rem;align-items:flex-start;justify-content:center}
+.paper-card{position:relative;width:240px;height:160px;cursor:pointer;perspective:800px;outline:none}
+.paper-front,.paper-back{
+  position:absolute;inset:0;border-radius:12px;backface-visibility:hidden;
+  transition:transform 0.55s cubic-bezier(0.4,0,0.2,1),box-shadow 0.3s;
+  background:
+    radial-gradient(ellipse at 20% 30%,rgba(160,130,80,0.10) 0%,transparent 60%),
+    radial-gradient(ellipse at 80% 70%,rgba(120,100,60,0.08) 0%,transparent 50%),
+    linear-gradient(135deg,#e8dfc4 0%,#ddd4b0 40%,#e4dbbf 70%,#d8cf9e 100%);
+  box-shadow:2px 2px 0 rgba(15,15,15,0.12),5px 5px 0 rgba(15,15,15,0.07),8px 8px 0 rgba(15,15,15,0.04);
+}
+.paper-front::after,.paper-back::after{
+  content:'';position:absolute;inset:0;border-radius:12px;pointer-events:none;
+  background-image:url("images/img-001-012dfa1a67.svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)' opacity='0.08'/%3E%3C/svg%3E");
+  opacity:0.85;mix-blend-mode:multiply;
+}
+.paper-front{display:flex;flex-direction:column;align-items:center;justify-content:center;transform:rotateY(0deg)}
+.paper-back{display:flex;flex-direction:column;justify-content:center;padding:1.4rem 1.6rem;transform:rotateY(180deg)}
+.paper-card:hover .paper-front,.paper-card:focus .paper-front{transform:rotateY(-180deg)}
+.paper-card:hover .paper-back,.paper-card:focus .paper-back{transform:rotateY(0deg);box-shadow:4px 6px 0 rgba(15,15,15,0.15)}
+.paper-label{font-size:9px;letter-spacing:0.22em;text-transform:uppercase;font-family:var(--sans);margin-bottom:0.4rem;opacity:0.6}
+.paper-title{font-family:var(--display);font-size:3rem;letter-spacing:0.04em;line-height:1}
+.paper-body{font-family:'DM Sans',system-ui,sans-serif;font-size:0.78rem;font-weight:300;color:#3a3020;line-height:1.6}
+.paper-clip{position:absolute;top:-18px;left:22px;width:22px;height:42px;z-index:10}
+.paper-clip::before,.paper-clip::after{content:'';position:absolute;border:2.5px solid var(--clip-color,#c8362a);border-radius:20px}
+.paper-clip::before{width:16px;height:38px;left:0;top:0;border-bottom-color:transparent;clip-path:inset(0 0 8px 0)}
+.paper-clip::after{width:9px;height:24px;left:3.5px;top:6px;border-top-color:transparent;clip-path:inset(4px 0 0 0)}
+.paper-cards .paper-card:nth-child(1){transform:rotate(-2.5deg);margin-top:16px}
+.paper-cards .paper-card:nth-child(2){transform:rotate(1.2deg)}
+.paper-cards .paper-card:nth-child(3){transform:rotate(-1deg);margin-top:8px}
+.paper-cards .paper-card:nth-child(1):hover,.paper-cards .paper-card:nth-child(1):focus{transform:rotate(-2.5deg) scale(1.04)}
+.paper-cards .paper-card:nth-child(2):hover,.paper-cards .paper-card:nth-child(2):focus{transform:rotate(1.2deg) scale(1.04)}
+.paper-cards .paper-card:nth-child(3):hover,.paper-cards .paper-card:nth-child(3):focus{transform:rotate(-1deg) scale(1.04)}
+.continue-hint{margin-top:2rem;font-family:var(--hand);font-size:1rem;color:var(--dim)}
+
+/* ═══════════════════════════════════════
+   SECTION 3 — RED SPLASH + FOLDER TABS
+═══════════════════════════════════════ */
+.sec3-page{
+  background:var(--red) !important;
+  align-items:flex-start !important;
+  justify-content:center !important;
+  padding:0 !important;
+  flex-direction:column !important;
+  position:relative;
+}
+.sec3-page::after{
+  content:'';
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  z-index:1;
+  background-image:url("images/img-001-012dfa1a67.svg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.13'/%3E%3C/svg%3E");
+  mix-blend-mode:multiply;
+}
+.sec3-body{position:relative;z-index:2}
+
+/* FOLDER TABS — trapezoid shape */
+.folder-tabs{
+  position:fixed;
+  top:0; left:0; right:0;
+  display:flex;
+  align-items:flex-end;
+  z-index:200;
+  padding:0 2rem;
+  background:white;
+  height:48px;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity 0.3s ease;
+}
+.folder-tabs.tabs-visible{
+  opacity:1;
+  pointer-events:all;
+}
+/* no bottom border — tabs are flush with page below */
+.folder-tabs::after{
+  content:'';
+  position:absolute;
+  bottom:0; left:0; right:0;
+  height:1px;
+  background:rgba(15,15,15,0.1);
+  z-index:1;
+}
+.ftab{
+  position:relative;
+  padding:0 2.5rem;
+  height:44px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-family:var(--sans);
+  font-size:clamp(0.72rem,1vw,0.88rem);
+  font-weight:600;
+  cursor:pointer;
+  user-select:none;
+  white-space:nowrap;
+  color:rgba(15,15,15,0.55);
+  margin-right:4px;
+  z-index:2;
+  clip-path:polygon(10% 0%, 90% 0%, 100% 100%, 0% 100%);
+  background:white;
+  transition:color 0.3s ease;
+  overflow:hidden;
+}
+/* red slide layer */
+.ftab::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:var(--red);
+  transform:translateY(101%);
+  transition:transform 0.35s cubic-bezier(0.4,0,0.2,1);
+  z-index:0;
+}
+.ftab span{position:relative;z-index:2}
+.ftab.tab-suppressed::before{
+  transform:translateY(101%) !important;
+  transition:transform 0.3s cubic-bezier(0.4,0,0.2,1);
+}
+.ftab.tab-suppressed{color:rgba(15,15,15,0.55) !important}
+
+.ftab.active::before{transform:translateY(0%)}
+.ftab.active{color:white;background-image:none}
+/* grain on active red tab — layered over the red ::before */
+.ftab.active span::after{
+  content:'';
+  position:absolute;
+  inset:-100px;
+  pointer-events:none;
+  z-index:1;
+  background-image:url("images/img-001-012dfa1a67.svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)' opacity='0.12'/%3E%3C/svg%3E");
+  mix-blend-mode:multiply;
+}
+.ftab span{position:relative;z-index:2}
+.ftab:hover:not(.active)::before{transform:translateY(0%)}
+.ftab:hover:not(.active){color:white}
+.ftab.active:hover::before{transform:translateY(0%)}
+
+/* inactive tabs: cream paper texture like section 2 cards */
+.ftab:not(.active){
+  background:
+    radial-gradient(ellipse at 20% 30%, rgba(160,130,80,0.10) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 70%, rgba(120,100,60,0.08) 0%, transparent 50%),
+    linear-gradient(135deg, #e8dfc4 0%, #ddd4b0 40%, #e4dbbf 70%, #d8cf9e 100%);
+  background-image:
+    radial-gradient(ellipse at 20% 30%, rgba(160,130,80,0.10) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 70%, rgba(120,100,60,0.08) 0%, transparent 50%),
+    linear-gradient(135deg, #e8dfc4 0%, #ddd4b0 40%, #e4dbbf 70%, #d8cf9e 100%);
+  color: rgba(15,15,15,0.65);
+}
+/* grain overlay on inactive tabs via ::after — but ::before is taken by red slide */
+/* Use outline trick: we layer grain in the background-image stack */
+.ftab:not(.active){
+  background-image:
+    url("images/img-001-012dfa1a67.svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)' opacity='0.05'/%3E%3C/svg%3E"),
+    radial-gradient(ellipse at 20% 30%, rgba(160,130,80,0.06) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 70%, rgba(120,100,60,0.04) 0%, transparent 50%),
+    linear-gradient(135deg, #f2ece0 0%, #ece5d2 40%, #f0e9d8 70%, #ebe3cc 100%);
+}
+/* ftab-lineart class — same paper treatment */
+.ftab.ftab-lineart:not(.active){
+  background-image:
+    url("images/img-001-012dfa1a67.svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)' opacity='0.05'/%3E%3C/svg%3E"),
+    radial-gradient(ellipse at 20% 30%, rgba(160,130,80,0.06) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 70%, rgba(120,100,60,0.04) 0%, transparent 50%),
+    linear-gradient(135deg, #f2ece0 0%, #ece5d2 40%, #f0e9d8 70%, #ebe3cc 100%);
+}
+
+/* DRAMATIC BODY TEXT */
+.sec3-body{
+  padding:0 4rem 2rem;
+  max-width:1100px;
+  width:calc(100% - 8rem);
+  margin-top:0;
+}
+/* first line: huge display — 2 lines, no orphan */
+.sec3-hero{
+  font-family:var(--sans);
+  font-size:clamp(2.2rem,4vw,3.6rem);
+  font-weight:700;
+  color:white;
+  line-height:1.12;
+  margin-bottom:2rem;
+  text-transform:uppercase;
+  letter-spacing:-0.01em;
+  max-width:none;
+  word-break:keep-all;
+  overflow-wrap:normal;
+  white-space:pre-line;
+}
+/* follow-up lines: medium, mixed weight */
+.sec3-mid{
+  font-family:var(--sans);
+  font-size:clamp(1rem,1.8vw,1.4rem);
+  font-weight:300;
+  color:rgba(255,255,255,0.88);
+  line-height:1.55;
+  margin-bottom:1rem;
+}
+.sec3-mid strong{
+  font-weight:700;
+  color:white;
+}
+/* punchline: italic, distinct */
+.sec3-punch-line{
+  font-family:var(--sans);
+  font-size:clamp(1.1rem,2vw,1.6rem);
+  font-weight:300;
+  font-style:italic;
+  color:rgba(255,255,255,0.9);
+  margin-top:1rem;
+}
+
+
+
+/* ═══════════════════════════════════════
+   POLAROIDS — TWO COLUMN LAYOUT
+═══════════════════════════════════════ */
+.pol-layout{
+  display:flex;
+  width:100%;
+  height:100%;
+  padding-top:48px; /* clear fixed tab bar */
+}
+
+/* LEFT 2/3 */
+.pol-left{
+  flex:0 0 62%;
+  display:flex;
+  flex-direction:column;
+  padding:2.5rem 3rem 2rem 3rem;
+  position:relative;
+  justify-content:center;
+  align-items:center;
+}
+.pol-left-title{
+  font-family:var(--sans);
+  font-size:clamp(1.2rem,2vw,1.65rem);
+  font-weight:700;
+  color:white;
+  line-height:1.4;
+  margin-bottom:2rem;
+  max-width:100%;
+  text-align:center;
+}
+
+/* side-by-side polaroids, no overlap */
+.pol-scatter{
+  display:flex;
+  flex-direction:row;
+  gap:2rem;
+  align-items:flex-end;
+  width:100%;
+  flex-shrink:0;
+  justify-content:center;
+}
+.polaroid{
+  background:white;
+  padding:9px;
+  cursor:pointer;
+  position:relative;
+  transition:transform 0.35s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.3s ease;
+  box-shadow:3px 6px 20px rgba(15,15,15,0.4), 1px 2px 6px rgba(15,15,15,0.2);
+  display:flex;flex-direction:column;
+  flex-shrink:0;
+}
+.pol-img-embed{
+  width:210px;
+  height:190px;
+  object-fit:cover;
+  display:block;
+  flex-shrink:0;
+}
+.pol-caption{
+  font-family:var(--hand);
+  font-size:1.15rem;
+  color:rgba(15,15,15,0.82);
+  text-align:center;
+  height:52px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  line-height:1.3;
+  padding:0 6px;
+}
+.pol-sub{font-size:0.9rem;opacity:0.75;font-family:var(--hand)}
+
+/* natural slight tilts — no overlap */
+.pol-1{ transform:rotate(-4deg); }
+.pol-2{ transform:rotate(3deg); }
+.pol-3{ transform:rotate(-2deg); }
+.pol-1:hover{ transform:rotate(-2deg) scale(1.12); z-index:10; box-shadow:6px 12px 30px rgba(15,15,15,0.5) }
+.pol-2:hover{ transform:rotate(5deg) scale(1.12); z-index:10; box-shadow:6px 12px 30px rgba(15,15,15,0.5) }
+.pol-3:hover{ transform:rotate(-3deg) scale(1.12); z-index:10; box-shadow:6px 12px 30px rgba(15,15,15,0.5) }
+
+/* DIVIDER */
+.pol-divider{
+  width:1px;
+  background:rgba(255,255,255,0.25);
+  margin:3rem 0;
+  flex-shrink:0;
+}
+
+/* RIGHT 1/3 */
+.pol-right{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:2rem 2rem;
+  gap:0.5rem;
+}
+.pol-result-title{
+  font-family:var(--sans);
+  font-size:clamp(1.8rem,3vw,2.8rem);
+  font-weight:700;
+  color:white;
+  text-align:center;
+  margin-bottom:0.75rem;
+}
+
+/* result polaroid — larger to fill right space */
+.pol-result{
+  position:relative;
+  cursor:pointer;
+  overflow:visible;
+  transform:rotate(1.5deg);
+}
+.pol-result:hover{ transform:rotate(1.5deg) scale(1.05); box-shadow:6px 12px 30px rgba(15,15,15,0.5) }
+.pol-result .pol-img-embed{
+  width:290px;
+  height:270px;
+}
+.pol-result-caption{
+  font-family:var(--hand);
+  font-size:1.2rem;
+  color:rgba(15,15,15,0.85);
+  text-align:center;
+  height:auto !important;
+  line-height:1.1 !important;
+  padding:4px 8px 10px !important;
+  margin-top:0;
+}
+
+/* reveal overlay */
+.pol-reveal-overlay{
+  position:absolute;
+  inset:0;
+  background:rgba(255,255,255,0.9);
+  display:flex;align-items:center;justify-content:center;
+  z-index:5;
+  transition:opacity 0.8s ease;
+  border-radius:0;
+}
+.pol-reveal-overlay.hidden{ opacity:0; pointer-events:none; }
+.pol-reveal-cue{
+  font-family:var(--hand);
+  font-size:1.1rem;
+  color:rgba(15,15,15,0.6);
+  text-align:center;
+  line-height:1.5;
+}
+.pol-upload-hint{
+  font-family:var(--hand);
+  font-size:0.85rem;
+  color:rgba(255,255,255,0.5);
+  cursor:pointer;
+  text-align:center;
+}
+.pol-upload-hint:hover{ color:rgba(255,255,255,0.8) }
+
+/* ═══════════════════════════════════════
+   DEEP DIVE SECTIONS (5, 6, 7)
+═══════════════════════════════════════ */
+.dd-page{
+  background:
+    url("images/img-001-012dfa1a67.svg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.68' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.038'/%3E%3C/svg%3E"),
+    radial-gradient(ellipse at 15% 85%, rgba(190,175,148,0.12) 0%, transparent 55%),
+    radial-gradient(ellipse at 85% 15%, rgba(210,195,165,0.09) 0%, transparent 50%),
+    #f7f3ec !important;
+  align-items:stretch !important;
+  justify-content:center !important;
+  padding:0 !important;
+}
+.dd-layout{
+  display:flex;
+  width:100%;
+  height:100%;
+  padding-top:48px;
+  gap:0;
+}
+.dd-left{
+  flex:0 0 38%;
+  padding:3rem 2.5rem 3rem 3.5rem;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  border-right:1px solid rgba(15,15,15,0.08);
+}
+.dd-right{
+  flex:1;
+  padding:2.5rem 3rem 2.5rem 2.5rem;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  gap:1rem;
+}
+.dd-eyebrow{
+  font-family:var(--sans);
+  font-size:10px;
+  letter-spacing:0.25em;
+  text-transform:uppercase;
+  color:var(--dim);
+  margin-bottom:0.75rem;
+}
+.dd-title{
+  font-family:var(--sans);
+  font-size:clamp(1.5rem,2.8vw,2.4rem);
+  font-weight:700;
+  color:var(--text);
+  line-height:1.15;
+  margin-bottom:1rem;
+}
+.dd-body{
+  font-family:var(--sans);
+  font-size:clamp(0.85rem,1.2vw,1rem);
+  font-weight:300;
+  color:var(--muted);
+  line-height:1.7;
+  max-width:320px;
+}
+
+/* NOTEBOOK */
+.dd-notebook{
+  background:
+    url("images/img-001-012dfa1a67.svg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.055'/%3E%3C/svg%3E"),
+    linear-gradient(to bottom right, #fcfaf6, #f5f0e8);
+  border:1px solid rgba(15,15,15,0.1);
+  border-radius:2px;
+  box-shadow:
+    2px 2px 0 rgba(15,15,15,0.05),
+    4px 5px 16px rgba(15,15,15,0.1),
+    0 1px 3px rgba(15,15,15,0.08);
+  overflow:hidden;
+  position:relative;
+  width:100%;
+  max-width:580px;
+}
+.dd-notebook-rings{
+  display:flex;
+  gap:18px;
+  padding:0 1.5rem;
+  background:
+    url("images/img-001-012dfa1a67.svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)' opacity='0.07'/%3E%3C/svg%3E"),
+    linear-gradient(to right, #d8d2c4, #cfc9ba);
+  border-bottom:1px solid rgba(15,15,15,0.12);
+  height:20px;
+  align-items:center;
+}
+.dd-ring{
+  width:15px;height:15px;
+  border-radius:50%;
+  border:2.5px solid rgba(80,75,65,0.35);
+  background:radial-gradient(circle at 35% 35%, #f0ece4, #d5d0c5);
+  flex-shrink:0;
+  box-shadow:inset 0 1px 2px rgba(0,0,0,0.15), 0 1px 2px rgba(255,255,255,0.6);
+}
+.dd-notebook-body{
+  display:flex;
+  gap:0;
+  padding:1.25rem 0.5rem;
+  min-height:200px;
+}
+.dd-notebook-col{
+  flex:1;
+  padding:0 1rem;
+  display:flex;
+  flex-direction:column;
+  gap:0.75rem;
+}
+.dd-notebook-divider{
+  width:1px;
+  background:rgba(15,15,15,0.08);
+  margin:0.5rem 0;
+}
+.dd-col-header{
+  font-family:var(--hand);
+  font-size:0.9rem;
+  color:rgba(15,15,15,0.55);
+  margin-bottom:0.25rem;
+  border-bottom:1px solid rgba(15,15,15,0.08);
+  padding-bottom:0.25rem;
+}
+
+/* STICKY NOTES */
+.dd-sticky{
+  padding:0.65rem 0.85rem;
+  font-family:var(--sans);
+  font-size:0.78rem;
+  line-height:1.55;
+  color:rgba(15,15,15,0.78);
+  box-shadow:
+    2px 3px 0 rgba(15,15,15,0.06),
+    3px 5px 10px rgba(15,15,15,0.1),
+    inset 0 0 0 1px rgba(15,15,15,0.04);
+  position:relative;
+  overflow:hidden;
+}
+/* paper grain on every sticky */
+.dd-sticky::after{
+  content:'';
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background-image:url("images/img-001-012dfa1a67.svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.78' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)' opacity='0.09'/%3E%3C/svg%3E");
+  mix-blend-mode:multiply;
+}
+.dd-sticky p{ margin-bottom:2px;position:relative;z-index:1 }
+.dd-sticky em{ font-style:italic;color:var(--red) }
+.dd-sticky-pink{
+  background:
+    url("images/img-001-012dfa1a67.svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.78' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)' opacity='0.08'/%3E%3C/svg%3E"),
+    linear-gradient(135deg, #f2c4b8 0%, #edb8aa 60%, #f0c0b2 100%);
+}
+.dd-sticky-yellow{
+  background:
+    url("images/img-001-012dfa1a67.svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.78' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)' opacity='0.07'/%3E%3C/svg%3E"),
+    linear-gradient(135deg, #f0dc8a 0%, #e8d47a 60%, #edd980 100%);
+}
+.dd-sticky-cream{
+  background:
+    url("images/img-001-012dfa1a67.svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.78' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)' opacity='0.07'/%3E%3C/svg%3E"),
+    linear-gradient(135deg, #e8e2d0 0%, #ddd7c4 60%, #e5dfd0 100%);
+}
+
+/* VENN DIAGRAM */
+.dd-venn{
+  position:relative;
+  width:100%;
+  height:80px;
+  margin:0.25rem 0;
+}
+.dd-venn-circle{
+  position:absolute;
+  width:54px;height:54px;
+  border-radius:50%;
+  border:1.5px solid rgba(15,15,15,0.25);
+  display:flex;align-items:flex-start;justify-content:center;
+  padding-top:5px;
+  font-family:var(--sans);font-size:0.6rem;color:rgba(15,15,15,0.55);
+}
+.dd-vc1{ left:0; top:12px; background:rgba(200,54,42,0.07) }
+.dd-vc2{ left:28px; top:12px; background:rgba(32,70,160,0.06) }
+.dd-venn-center{
+  position:absolute;
+  left:28px;top:30px;
+  font-size:0.7rem;color:rgba(15,15,15,0.4);
+}
+
+/* QUESTIONS in notebook */
+.dd-question{
+  font-family:var(--hand);
+  font-size:0.95rem;
+  color:rgba(15,15,15,0.8);
+  line-height:1.5;
+  margin-bottom:0.9rem;
+  padding-left:0.25rem;
+}
+
+/* small polaroid */
+.dd-polaroid-small{
+  background:white;
+  padding:6px 6px 0;
+  box-shadow:2px 4px 12px rgba(15,15,15,0.2);
+  display:inline-flex;
+  flex-direction:column;
+}
+
+/* tape strip */
+.dd-tape{
+  width:80px;height:22px;
+  background:rgba(245,230,163,0.7);
+  margin:0.5rem auto 0;
+  border-radius:2px;
+  box-shadow:0 1px 3px rgba(15,15,15,0.1);
+}
+
+/* PAPERS ROW — section B */
+/* 1x4 row layout */
+.dd-row14{
+  display:flex;
+  flex-direction:row;
+  flex:1;
+  gap:0.75rem;
+  padding:0.75rem 1.5rem 1rem;
+  overflow:hidden;
+}
+.dd-col14{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  min-width:0;
+}
+.dd-sheet14{
+  width:100%;
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  gap:0.55rem;
+  overflow:hidden;
+  background:
+    url("images/img-001-012dfa1a67.svg viewBox='0 0 300 300' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E"),
+    linear-gradient(160deg, #fdfaf4 0%, #f8f3ea 100%);
+  border:1px solid rgba(15,15,15,0.09);
+  padding:0.85rem 0.85rem 0.9rem;
+  box-shadow:1px 1px 0 rgba(15,15,15,0.04),2px 4px 12px rgba(15,15,15,0.09);
+}
+.dd-col-header14{
+  font-family:var(--hand);
+  font-size:0.95rem;
+  color:rgba(15,15,15,0.52);
+  border-bottom:1px solid rgba(15,15,15,0.08);
+  padding-bottom:0.3rem;
+  margin-bottom:0.1rem;
+  flex-shrink:0;
+}
+
+/* horizontal image+caption rows */
+.dd-vis-row-horiz{
+  display:flex;
+  align-items:center;
+  gap:0.65rem;
+  flex-shrink:0;
+}
+.dd-vis-img-sq{width:72px;height:72px;object-fit:cover;object-position:right center;flex-shrink:0;border:1px solid rgba(15,15,15,0.08);display:block}
+.dd-vis-cap-side{font-family:var(--hand);font-size:0.82rem;color:rgba(15,15,15,0.68);line-height:1.38;flex:1}
+
+/* larger vis images for expanded rows */
+.dd-vis-img-lg{
+  width:176px;
+  height:176px;
+  object-fit:cover;
+  object-position:right center;
+  flex-shrink:0;
+  border:1px solid rgba(15,15,15,0.08);
+  display:block;
+}
+.dd-vis-cap-lg{
+  font-family:var(--hand);
+  font-size:1rem;
+  color:rgba(15,15,15,0.72);
+  line-height:1.5;
+  flex:1;
+}
+.dd-paper-tape{
+  width:48px;height:18px;
+  background:
+    url("images/img-001-012dfa1a67.svg viewBox='0 0 100 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.6' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)' opacity='0.12'/%3E%3C/svg%3E"),
+    linear-gradient(180deg, rgba(240,225,150,0.82) 0%, rgba(235,218,138,0.78) 100%);
+  border-radius:1px;
+  box-shadow:0 1px 2px rgba(15,15,15,0.12), inset 0 0 0 1px rgba(255,255,255,0.3);
+  margin-bottom:-9px;
+  z-index:2;
+  position:relative;
+  /* slight transparency for tape-like look */
+  opacity:0.88;
+}
+.dd-paper-sheet{
+  background:
+    url("images/img-001-012dfa1a67.svg viewBox='0 0 300 300' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E"),
+    linear-gradient(160deg, #fdfaf4 0%, #f8f3ea 100%);
+  border:1px solid rgba(15,15,15,0.09);
+  width:100%;
+  padding:0.75rem 0.75rem 0.8rem;
+  box-shadow:
+    1px 1px 0 rgba(15,15,15,0.04),
+    2px 4px 12px rgba(15,15,15,0.09),
+    inset 0 0 0 1px rgba(255,255,255,0.6);
+  display:flex;
+  flex-direction:column;
+  gap:0.5rem;
+  min-height:260px;
+  position:relative;
+}
+.dd-paper-lined{
+  background:
+    url("images/img-001-012dfa1a67.svg viewBox='0 0 300 300' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E"),
+    repeating-linear-gradient(transparent,transparent 19px,rgba(15,15,15,0.07) 19px,rgba(15,15,15,0.07) 20px),
+    linear-gradient(160deg, #fdfaf4 0%, #f8f3ea 100%);
+}
+.dd-paper-header{
+  font-family:var(--hand);
+  font-size:0.85rem;
+  color:rgba(15,15,15,0.55);
+  border-bottom:1px solid rgba(15,15,15,0.08);
+  padding-bottom:0.3rem;
+  margin-bottom:0.25rem;
+}
+.dd-paper-arrow{
+  font-family:var(--sans);
+  font-size:0.75rem;
+  color:rgba(15,15,15,0.3);
+  text-align:center;
+  margin:0;
+}
+
+/* Venn diagram large */
+.dd-venn-large{
+  position:relative;
+  height:80px;
+  margin:0.25rem 0;
+}
+.dd-vl-c{
+  position:absolute;
+  width:52px;height:52px;
+  border-radius:50%;
+  border:1.5px solid rgba(15,15,15,0.22);
+  display:flex;align-items:flex-start;justify-content:center;
+  padding-top:5px;
+  font-family:var(--sans);font-size:0.55rem;color:rgba(15,15,15,0.6);
+  text-align:center;
+}
+.dd-vl-c1{left:10px;top:0;background:rgba(200,54,42,0.07)}
+.dd-vl-c2{left:0;top:26px;background:rgba(32,70,160,0.06)}
+.dd-vl-c3{left:20px;top:26px;background:rgba(15,15,15,0.04)}
+
+/* image swatches placeholder */
+.dd-img-swatch{
+  background:#d5cfc4;
+  height:45px;
+  border-radius:1px;
+}
+.dd-texture-swatch{
+  background:#ede8d8;
+  height:18px;
+  border-radius:1px;
+}
+
+/* SQUARE POST-IT NOTES */
+.postit{
+  padding:0.9rem 1rem;
+  font-family:var(--sans);
+  font-size:0.85rem;
+  line-height:1.55;
+  color:rgba(15,15,15,0.8);
+  position:relative;
+  box-shadow:2px 3px 8px rgba(15,15,15,0.15),3px 5px 0 rgba(15,15,15,0.05);
+  overflow:hidden;
+}
+.postit::after{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background-image:url("images/img-001-012dfa1a67.svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.78' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)' opacity='0.08'/%3E%3C/svg%3E");
+  mix-blend-mode:multiply;
+}
+.postit p{position:relative;z-index:1;margin-bottom:2px}
+.postit em{font-style:italic;color:var(--red)}
+.postit strong{font-weight:600}
+.postit-pink{background:linear-gradient(135deg,#f2c4b8,#edb8aa)}
+.postit-yellow{background:linear-gradient(135deg,#f0dc8a,#e8d47a)}
+.postit-cream{background:linear-gradient(135deg,#e8e2d0,#ddd7c4)}
+
+/* ITERATIVE IMAGE ROWS */
+.vis-iter-row{
+  display:flex;
+  align-items:center;
+  gap:0.7rem;
+  min-height:0;
+}
+.vis-iter-img{
+  width:160px;
+  height:160px;
+  object-fit:cover;
+  object-position:right center;
+  flex-shrink:0;
+  display:block;
+}
+.vis-iter-cap{
+  font-family:var(--sans);
+  font-size:0.82rem;
+  font-weight:300;
+  color:rgba(15,15,15,0.72);
+  line-height:1.5;
+  flex:1;
+}
+
+/* HAND-DRAWN ARROW */
+.vis-arrow{
+  font-family:var(--hand);
+  font-size:1.4rem;
+  color:var(--red);
+  text-align:left;
+  padding-left:0.75rem;
+  flex-shrink:0;
+  line-height:1;
+  opacity:0.7;
+}
+
+/* REF BOOKS */
+.dd-ref-book{
+  flex:1;
+  height:55px;
+  display:flex;
+  align-items:flex-end;
+  justify-content:center;
+  padding:4px;
+  border-radius:1px;
+  box-shadow:1px 2px 4px rgba(15,15,15,0.2);
+}
+.dd-ref-title{
+  font-family:var(--sans);
+  font-size:0.55rem;
+  font-weight:600;
+  color:white;
+  text-align:center;
+  line-height:1.2;
+  text-shadow:0 1px 2px rgba(0,0,0,0.3);
+}
+
+/* VISUAL DIRECTION IMAGES */
+.dd-vis-row{
+  display:flex;
+  gap:5px;
+  flex:1;
+  align-items:flex-start;
+}
+.dd-vis-item{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  gap:3px;
+}
+.dd-vis-img{
+  width:100%;
+  aspect-ratio:1;
+  object-fit:cover;
+  object-position:right center;
+  display:block;
+  border:1px solid rgba(15,15,15,0.08);
+}
+.dd-vis-cap{
+  font-family:var(--hand);
+  font-size:0.62rem;
+  color:rgba(15,15,15,0.6);
+  line-height:1.3;
+  text-align:center;
+}
+
+/* BOOK COVER */
+.dd-book-cover{
+  background:linear-gradient(160deg,#b8cce0 0%,#7a9fc0 50%,#5a82a8 100%);
+  width:200px;
+  height:240px;
+  margin:0 auto;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:flex-end;
+  padding:1.5rem 1rem 1rem;
+  box-shadow:4px 8px 24px rgba(15,15,15,0.25), -2px 0 6px rgba(15,15,15,0.1);
+  border-radius:2px 4px 4px 2px;
+}
+.dd-book-title{
+  font-family:var(--serif);
+  font-size:1.35rem;
+  font-weight:400;
+  color:white;
+  text-align:center;
+  line-height:1.2;
+  margin-bottom:0.75rem;
+  text-shadow:0 1px 3px rgba(0,0,0,0.2);
+}
+.dd-book-author{
+  font-family:var(--sans);
+  font-size:0.75rem;
+  color:rgba(255,255,255,0.8);
+  letter-spacing:0.08em;
+}
+
+/* ═══════════════════════════════════════
+   SHARED
+═══════════════════════════════════════ */
+.page-inner{width:100%;max-width:900px}
+.big-label{font-family:var(--display);line-height:0.9;letter-spacing:0.01em;color:var(--text);margin-bottom:1.25rem}
+.big-label em{font-family:var(--serif);font-style:italic;color:var(--red)}
+.sub-text{font-size:14px;color:var(--muted);max-width:520px;line-height:1.7}
+
+/* old vertical tracker removed */
+
+/* ── EXPAND CARDS ── */
+.xcard{border:1px solid var(--line2);background:white;margin-bottom:-1px;width:100%;max-width:720px;transition:box-shadow 0.2s}
+.xcard:hover{box-shadow:3px 3px 0 var(--text)}
+.xhead{padding:1.25rem 1.75rem;cursor:pointer;display:flex;justify-content:space-between;align-items:center;user-select:none;gap:1rem}
+.xhead-text{font-family:var(--serif);font-size:1.05rem;font-style:italic;color:var(--text);line-height:1.4}
+.xtoggle{font-family:var(--display);font-size:1.5rem;color:var(--dim);transition:transform 0.3s,color 0.3s;flex-shrink:0;width:24px;text-align:center;line-height:1}
+.xcard.open .xtoggle{transform:rotate(45deg);color:var(--red)}
+.xbody{max-height:0;overflow:hidden;transition:max-height 0.5s cubic-bezier(0.4,0,0.2,1)}
+.xcard.open .xbody{max-height:800px}
+.xbody-inner{padding:0 1.75rem 1.5rem}
+.fn-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:0.75rem 0}
+.fn{padding:0.6rem 0.9rem;border:1px solid var(--line2);font-size:12px;cursor:pointer;transition:all 0.2s;color:var(--muted);background:var(--bg);font-family:var(--sans);letter-spacing:0.04em;text-align:left}
+.fn:hover,.fn.on{background:var(--text);color:var(--bg);border-color:var(--text)}
+.fn-out{display:none;margin-top:0.75rem;padding:1rem 1.25rem;border-left:3px solid var(--red);background:var(--bg)}
+.fn-out.show{display:block}
+.fn-q{font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--red);margin-bottom:0.35rem;font-family:var(--sans)}
+.fn-a{font-size:13px;color:var(--muted);line-height:1.6}
+
+/* ── CONCLUSION ── */
+.conclusion{max-width:720px;width:100%;border-top:2px solid var(--text);padding:2rem 0}
+.c-label{font-family:var(--hand);font-size:1rem;color:var(--red);margin-bottom:0.75rem;display:block}
+.c-text{font-family:var(--serif);font-size:1.15rem;font-style:italic;color:var(--text);line-height:1.7}
+
+/* ── CASE CARDS ── */
+.case-wrap{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:1rem;width:100%;max-width:720px}
+.ccard{border:1px solid var(--line2);background:white;overflow:hidden;transition:box-shadow 0.2s}
+.ccard:hover{box-shadow:3px 3px 0 var(--text)}
+.chead{padding:1rem 1.25rem;cursor:pointer;display:flex;justify-content:space-between;align-items:center;user-select:none}
+.cname{font-family:var(--display);font-size:1.5rem;letter-spacing:0.03em}
+.ctog{font-size:18px;color:var(--dim);transition:transform 0.3s,color 0.3s;display:inline-block;line-height:1}
+.ccard.open .ctog{transform:rotate(45deg);color:var(--red)}
+.cbody{max-height:0;overflow:hidden;transition:max-height 0.45s ease}
+.ccard.open .cbody{max-height:300px}
+.cinner{padding:0 1.25rem 1.25rem}
+.crow{margin-bottom:0.65rem}
+.clabel{font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--blue);margin-bottom:0.2rem;font-family:var(--sans)}
+.ctext{font-size:13px;color:var(--muted);line-height:1.55}
+
+/* ── INSTINCT ── */
+.inst-list{width:100%;max-width:740px;border-top:1px solid var(--line2)}
+.inst-row{display:grid;grid-template-columns:60px 1fr;gap:1.5rem;padding:1.75rem 0;border-bottom:1px solid var(--line2);align-items:start}
+.inst-n{font-family:var(--display);font-size:3rem;color:var(--line2);line-height:1}
+.inst-name{font-family:var(--display);font-size:1.1rem;letter-spacing:0.04em;color:var(--text);margin-bottom:0.4rem}
+.inst-name .red{color:var(--red)}.inst-name .blue{color:var(--blue)}
+.inst-body{font-size:13.5px;color:var(--muted);line-height:1.65}
+
+/* ── HEART ── */
+.heart-wrap{display:grid;grid-template-columns:repeat(3,1fr);width:100%;max-width:900px;border:1px solid var(--line2)}
+.hcard{padding:2rem 1.75rem;border-right:1px solid var(--line2);transition:background 0.3s;position:relative;overflow:hidden}
+.hcard:last-child{border-right:none}
+.hcard:hover{background:rgba(15,15,15,0.03)}
+.h-bar{width:100%;height:3px;margin-bottom:1.5rem}
+.h-bar.g{background:var(--blue)}.h-bar.e{background:var(--red)}.h-bar.i{background:var(--text)}
+.h-ghost{font-family:var(--display);font-size:4rem;color:rgba(15,15,15,0.05);line-height:1;position:absolute;bottom:0.75rem;right:1rem;pointer-events:none}
+.h-title{font-family:var(--display);font-size:1.6rem;letter-spacing:0.02em;margin-bottom:0.75rem}
+.h-body{font-size:13px;color:var(--muted);line-height:1.65}
+
+/* ── OUTRO ── */
+.outro{text-align:center;max-width:780px}
+.outro-big{
+  font-family:var(--sans);font-weight:700;line-height:1.1;letter-spacing:-0.02em;
+  margin-bottom:1.2rem;font-size:clamp(1rem,2vw,1.5rem);color:var(--text);
+}
+.outro-connect{
+  font-family:var(--sans);font-weight:700;
+  font-size:clamp(1.8rem,4vw,3.2rem);
+  color:var(--red);line-height:1.15;margin-bottom:2.5rem;letter-spacing:-0.02em;
+}
+.ctas{display:flex;gap:1.5rem;justify-content:center;flex-wrap:wrap;align-items:center}
+/* scrapbooky red CTA cards — grainy, rounded, slight rotation */
+.cta-card{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0.2rem;
+  padding:1.2rem 2.6rem;
+  text-decoration:none;
+  font-family:var(--sans);
+  border-radius:14px;
+  position:relative;
+  overflow:hidden;
+  min-width:200px;
+  background:var(--red);
+  color:white;
+  border:none;
+  transition:transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease;
+}
+/* grain overlay */
+.cta-card::after{
+  content:'';
+  position:absolute;inset:0;
+  background-image:url("images/img-001-012dfa1a67.svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.78' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)' opacity='0.11'/%3E%3C/svg%3E");
+  pointer-events:none;
+  border-radius:inherit;
+}
+.cta-card-linkedin{ transform:rotate(-1.5deg); box-shadow:3px 4px 0 rgba(15,15,15,0.35); }
+.cta-card-linkedin:hover{ transform:rotate(-1.5deg) translateY(-3px); box-shadow:4px 7px 0 rgba(15,15,15,0.35); filter:brightness(1.08); }
+.cta-card-email{ transform:rotate(1.2deg); box-shadow:3px 4px 0 rgba(15,15,15,0.35); }
+.cta-card-email:hover{ transform:rotate(1.2deg) translateY(-3px); box-shadow:4px 7px 0 rgba(15,15,15,0.35); filter:brightness(1.08); }
+.cta-card-label{
+  font-family:var(--sans);font-weight:300;
+  font-size:0.7rem;color:rgba(255,255,255,0.7);
+  text-transform:uppercase;letter-spacing:0.18em;
+}
+.cta-card-value{
+  font-family:var(--sans);font-weight:600;
+  font-size:1rem;color:white;
+}
+
+/* ═══════════════════════════════════════
+   EXHIBIT CARDS
+═══════════════════════════════════════ */
+.exhibit-card{
+  cursor:pointer;
+  width:220px;
+  position:relative;
+  transition:transform 0.35s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.3s ease;
+  /* paper texture */
+  background:
+    url("images/img-001-012dfa1a67.svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)' opacity='0.07'/%3E%3C/svg%3E"),
+    linear-gradient(135deg, #f2ece0 0%, #ece5d2 50%, #f0e9d8 100%);
+  box-shadow:2px 3px 0 rgba(15,15,15,0.1), 5px 6px 16px rgba(15,15,15,0.2);
+}
+.exhibit-card:nth-child(1){ transform:rotate(-3deg) }
+.exhibit-card:nth-child(2){ transform:rotate(1.5deg) translateY(-8px) }
+.exhibit-card:nth-child(3){ transform:rotate(-1deg) translateY(4px) }
+.exhibit-card:hover{ transform:rotate(0deg) translateY(-10px) scale(1.05); box-shadow:4px 8px 28px rgba(15,15,15,0.35); z-index:10 }
+/* paper clip on each card */
+.exhibit-card::before{
+  content:'';position:absolute;top:-16px;left:20px;
+  width:18px;height:36px;
+  border:2.5px solid var(--red);border-radius:16px;
+  border-bottom-color:transparent;
+  clip-path:inset(0 0 6px 0);
+}
+.exhibit-card-inner{
+  padding:2rem 1.5rem 1.5rem;
+  display:flex;flex-direction:column;gap:0.5rem;
+}
+.exhibit-label{
+  font-family:var(--sans);font-size:10px;letter-spacing:0.22em;
+  text-transform:uppercase;color:var(--red);opacity:0.8;
+}
+.exhibit-title{
+  font-family:var(--sans);font-size:1.1rem;font-weight:700;
+  color:var(--text);line-height:1.25;
+}
+.exhibit-hint{
+  font-family:var(--hand);font-size:0.9rem;
+  color:var(--muted);margin-top:0.5rem;
+}
+
+/* ═══════════════════════════════════════
+   MODALS
+═══════════════════════════════════════ */
+.exhibit-modal{
+  position:fixed;inset:0;z-index:1000;
+  display:none;align-items:center;justify-content:center;
+  background:rgba(10,10,10,0.75);
+  backdrop-filter:blur(6px);
+  padding:2rem;
+}
+.exhibit-modal.open{ display:flex }
+.modal-inner{
+  width:min(880px,95vw);
+  max-height:90vh;
+  display:flex;flex-direction:column;
+  gap:1rem;
+  position:relative;
+}
+.modal-close{
+  position:absolute;top:-2.5rem;right:0;
+  background:none;border:none;color:white;
+  font-size:1.2rem;cursor:pointer;
+  font-family:var(--sans);letter-spacing:0.1em;
+  opacity:0.7;transition:opacity 0.2s;
+  z-index:10;
+}
+.modal-close:hover{opacity:1}
+.modal-pages{ position:relative;flex:1;min-height:0 }
+.modal-page{
+  display:none;
+  height:100%;
+}
+.modal-page.active{ display:flex }
+.modal-page-content{
+  width:100%;
+  min-height:500px;
+  max-height:75vh;
+  display:flex;
+  overflow:hidden;
+}
+.modal-nav{
+  display:flex;align-items:center;justify-content:center;gap:1.5rem;
+  flex-shrink:0;
+  position:relative;
+  z-index:10;
+  padding:0.5rem 0;
+}
+.modal-btn{
+  position:static !important;
+  right:auto !important;
+}
+.modal-btn{
+  background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);
+  color:white;width:40px;height:40px;border-radius:50%;
+  font-size:1rem;cursor:pointer;transition:all 0.2s;
+  display:flex;align-items:center;justify-content:center;
+  position:static;
+  flex-shrink:0;
+}
+.modal-btn:hover{ background:rgba(255,255,255,0.3) }
+.modal-btn:disabled{ opacity:0.3;cursor:default }
+.modal-dots{ display:flex;gap:6px;align-items:center }
+.modal-dot{
+  width:6px;height:6px;border-radius:50%;
+  background:rgba(255,255,255,0.3);transition:all 0.2s;
+  cursor:pointer;border:none;padding:0;
+}
+.modal-dot.active{ background:white;width:18px;border-radius:3px }
+
+/* ═══ PAGE 4 — CHAOS BOARD ANIMATIONS ═══ */
+
+/* Cluster fade-in: initial state */
+.cluster-fade{
+  opacity:0;
+  transform:translateY(14px);
+  transition:opacity 1s ease-out, transform 1s ease-out;
+}
+.cluster-fade.is-visible{
+  opacity:1;
+  transform:translateY(0);
+}
+
+/* Real Answer wrapper — relative position for the dim overlay + cue */
+.real-answer-wrapper{ position:relative; cursor:pointer; }
+
+/* Dimmed white overlay over the Real Answer card (before click) */
+.real-answer-dim{
+  position:absolute;
+  inset:0;
+  background:rgba(255,255,255,0.9);
+  z-index:11;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  pointer-events:none;
+  transition:opacity 0.4s ease-out;
+  border:1px solid rgba(15,15,15,0.06);
+}
+.eureka-cue{
+  font-family:var(--hand);
+  font-size:1.15rem;
+  color:var(--red);
+  text-align:center;
+  line-height:1.3;
+  padding:0 1rem;
+  animation:eurekaPulse 1.8s ease-in-out infinite;
+}
+@keyframes eurekaPulse{
+  0%,100%{ transform:scale(1); opacity:0.85; }
+  50%{ transform:scale(1.05); opacity:1; }
+}
+
+/* When revealed: hide the dim overlay, lift the card */
+.real-answer-wrapper.revealed .real-answer-dim{
+  opacity:0;
+}
+.real-answer-wrapper.revealed{
+  z-index:1500;
+  position:relative;
+}
+/* Dissolve the parent cluster-fade's stacking context when revealed,
+   so the wrapper actually rises above the fixed backdrop. */
+.cluster-fade.has-revealed-child{
+  transform:none !important;
+  z-index:1500;
+}
+/* The Real Answer card itself — expansion animation on reveal */
+.real-answer-wrapper .real-answer-card{
+  transition:transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transform:rotate(0.5deg) scale(1);
+  transform-origin:center center;
+}
+.real-answer-wrapper.revealed .real-answer-card{
+  animation:realAnswerExpand 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+@keyframes realAnswerExpand{
+  0%{ transform:rotate(0.5deg) scale(1); }
+  55%{ transform:rotate(0.5deg) scale(1.12); }
+  100%{ transform:rotate(0.5deg) scale(1.05); }
+}
+
+/* Full-page dimming backdrop (appears on click) */
+.page-dim-backdrop{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.5);
+  opacity:0;
+  pointer-events:none;
+  z-index:1000;
+  transition:opacity 0.5s ease-out;
+}
+.page-dim-backdrop.is-active{
+  opacity:1;
+  pointer-events:auto;
+}
+
+</style>
+</head>
+<body>
+
+<!-- Dimming backdrop for Real Answer reveal -->
+<div class="page-dim-backdrop" id="pageDimBackdrop"></div>
+
+<nav class="nav" id="nav"></nav>
+
+<!-- FIXED FOLDER TABS — shown across all mind sections -->
+<div class="folder-tabs" id="folderTabs">
+  <div class="ftab active" data-page-target="2"><span>I go from 0 to 100</span></div>
+  <div class="ftab" data-page-target="3"><span>I embrace the chaos</span></div>
+  <div class="ftab ftab-lineart" data-page-target="6"><span>When I'm in, I'm all in</span></div>
+</div>
+
+<div class="scroller" id="scroller">
+
+<!-- ═══ 0: HERO ═══ -->
+<div class="page hero-page" data-page="0">
+
+  <div class="hero-left">
+    <div class="hero-intro">Hi, my name is</div>
+    <div class="hero-name-new">Megan Bon.</div>
+    <p class="hero-sub">This site isn't meant to be a prettier version of my resume (so please do read my resume for my professional experience).<br><br>It's more a collection of patterns I've noticed about myself — how I tend to think, work, and approach things I care about, and why this matters.</p>
+    <div class="scroll-hint" style="margin-top:1.5rem">
+      <div class="scroll-line"></div>
+      <span>Keep scrolling to get to know me!</span>
+    </div>
+  </div>
+
+  <div class="passport-outer">
+    <div class="passport-card" id="passportCard" onclick="this.classList.toggle('expanded')">
+      <div class="pp-book">
+
+        <!-- left decorative page -->
+        <div class="pp-left">
+          <div class="pp-spine-line"></div>
+          <div class="pp-spine">REPUBLIC OF SINGAPORE · PORTFOLIO</div>
+          <div class="pp-spine-line"></div>
+          <div class="pp-spine">SGP · NYC · 2025</div>
+          <div class="pp-spine-line"></div>
+        </div>
+
+        <!-- right main page -->
+        <div class="pp-right">
+          <div class="pp-topstrip"></div>
+          <div class="pp-hlabel">PASSPORT</div>
+
+          <div class="pp-content">
+
+            <!-- photo: full-height left col -->
+            <div class="pp-photo-col">
+              <div class="pp-photo" id="ppPhoto" style="background:none;border-color:rgba(15,15,15,0.18)">
+                <img id="ppPhotoImg" src="images/megan-photo.png" alt="Profile" style="display:block;position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top">
+              </div>
+              <!-- stamp under photo -->
+              <div class="pp-stamp">
+                <div class="pp-stamp-box">
+                  <div class="pp-stamp-planes"><span>✈</span><span></span></div>
+                  <div class="pp-stamp-country">★ SINGAPORE ★</div>
+                  <div class="pp-stamp-sub">REPUBLIC OF SINGAPORE</div>
+                  <div class="pp-stamp-date">DEPARTED: 15 JUN 2025</div>
+                  <div class="pp-stamp-flight">SQ 1965</div>
+                  <div class="pp-stamp-planes"><span></span><span>✈</span></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- fields -->
+            <div class="pp-fields">
+              <div class="pp-chip"><div class="pp-chip-i"></div></div>
+
+              <div class="pp-f">
+                <div class="pp-fl">NAME</div>
+                <div class="pp-fv big">MEGAN BON</div>
+              </div>
+              <div class="pp-f">
+                <div class="pp-fl">ALIAS</div>
+                <div class="pp-fv">THE GENERALIST</div>
+              </div>
+
+              <div class="pp-rule"></div>
+
+              <div class="pp-f">
+                <div class="pp-fl">EDUCATIONAL BACKGROUND</div>
+                <div class="pp-edu">
+                  <div class="pp-edu-d">BACHELORS IN BUSINESS MANAGEMENT</div>
+                  <div class="pp-edu-i">@ SINGAPORE MANAGEMENT UNIVERSITY</div>
+                </div>
+              </div>
+
+              <div class="pp-rule"></div>
+
+              <div class="pp-f">
+                <div class="pp-fl">PROFESSIONAL EXPERIENCE</div>
+                <div class="pp-edu">
+                  <div class="pp-edu-d">BRAND MANAGER (INTERNAL STRATEGY)</div>
+                  <div class="pp-edu-i">@ PROCTER &amp; GAMBLE</div>
+                </div>
+                <div class="pp-edu">
+                  <div class="pp-edu-d">BIZOPS INTERN</div>
+                  <div class="pp-edu-i">@ KNOETIC.AI (US-BASED PEOPLE ANALYTICS)</div>
+                </div>
+              </div>
+
+            </div>
+
+          </div><!-- /pp-content -->
+
+          <div class="pp-mrz">
+            P&lt;BON&lt;&lt;MEGAN&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;<br>
+            GENERALIST&lt;&lt;CREATOR&lt;&lt;STORYTELLER&lt;&lt;PROBLEM-SOLVER&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;
+          </div>
+        </div><!-- /pp-right -->
+
+      </div><!-- /pp-book -->
+    </div><!-- /passport-card -->
+    <div class="pp-hint">hover or click to expand →</div>
+  </div><!-- /passport-outer -->
+
+</div><!-- /hero page -->
+
+<!-- ═══ 1: PILLARS ═══ -->
+<div class="page" data-page="1">
+  <p style="font-family:'DM Sans',system-ui,sans-serif;font-size:clamp(1rem,1.6vw,1.25rem);font-weight:400;color:var(--text);text-align:center;max-width:600px;margin-bottom:1.5rem;line-height:1.5">If there are 3 things that sum up who I am as a person, it's these:</p>
+  <p style="font-family:var(--hand);font-size:1rem;color:var(--dim);margin-bottom:1.75rem">← click or hover over cards to read →</p>
+  <div class="paper-cards">
+    <div class="paper-card" tabindex="0">
+      <div class="paper-clip" style="--clip-color:#c8362a"></div>
+      <div class="paper-front">
+        <span class="paper-label" style="color:var(--red)">01</span>
+        <div class="paper-title" style="color:var(--red); font-size:1.6rem; padding:0 1rem; text-align:center; line-height:1.1">I go from 0 to 100.</div>
+      </div>
+      <div class="paper-back">
+        <span class="paper-label" style="color:var(--red)">01</span>
+        <p class="paper-body">Once I care about something, my standards for it tend to escalate very quickly.</p>
+      </div>
+    </div>
+    <div class="paper-card" tabindex="0">
+      <div class="paper-clip" style="--clip-color:#c8362a"></div>
+      <div class="paper-front">
+        <span class="paper-label" style="color:var(--red)">02</span>
+        <div class="paper-title" style="color:var(--red); font-size:1.6rem; padding:0 1rem; text-align:center; line-height:1.1">I embrace the chaos.</div>
+      </div>
+      <div class="paper-back">
+        <span class="paper-label" style="color:var(--red)">02</span>
+        <p class="paper-body">I have a weird tendency to turn vague problems into personal investigations.</p>
+      </div>
+    </div>
+    <div class="paper-card" tabindex="0">
+      <div class="paper-clip" style="--clip-color:#c8362a"></div>
+      <div class="paper-front">
+        <span class="paper-label" style="color:var(--red)">03</span>
+        <div class="paper-title" style="color:var(--red); font-size:1.6rem; padding:0 1rem; text-align:center; line-height:1.1">When I'm in,<br>I'm all in.</div>
+      </div>
+      <div class="paper-back">
+        <span class="paper-label" style="color:var(--red)">03</span>
+        <p class="paper-body">I do what it takes and learn whatever I need to to get the job done.</p>
+      </div>
+    </div>
+  </div>
+  <p class="continue-hint">keep scrolling to dive deeper ↓</p>
+</div>
+
+<!-- ═══ 2: I GO FROM 0 TO 100 ═══ -->
+<div class="page sec3-page" data-page="2">
+  <!-- folder tabs still show via fixed positioned folderTabs -->
+  <div class="sec3-body" style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:5rem 4rem 3rem;margin-top:0;max-width:none;width:100%;text-align:center">
+
+    <p class="sec3-hero" style="font-size:clamp(2rem,4vw,3.5rem);margin-bottom:1rem">
+      I go from 0 to 100.
+    </p>
+    <p class="sec3-mid" style="max-width:580px;margin:0 auto 3rem;text-align:center;font-size:clamp(0.95rem,1.5vw,1.15rem)">
+      Once I care about something, my standards for it tend to escalate very quickly. See Exhibits A, B and C.
+    </p>
+
+    <!-- 3 EXHIBIT CARDS -->
+    <div style="display:flex;gap:1.5rem;justify-content:center;align-items:stretch">
+
+      <div class="exhibit-card" onclick="openExhibit('a')">
+        <div class="exhibit-card-inner">
+          <p class="exhibit-label">Exhibit A</p>
+          <p class="exhibit-title">My first time<br>pottery painting</p>
+          <p class="exhibit-hint">click to explore →</p>
+        </div>
+      </div>
+
+      <div class="exhibit-card" onclick="openExhibit('b')">
+        <div class="exhibit-card-inner">
+          <p class="exhibit-label">Exhibit B</p>
+          <p class="exhibit-title">My children's book<br>passion project</p>
+          <p class="exhibit-hint">click to explore →</p>
+        </div>
+      </div>
+
+      <div class="exhibit-card" onclick="openExhibit('c')">
+        <div class="exhibit-card-inner">
+          <p class="exhibit-label">Exhibit C</p>
+          <p class="exhibit-title">Hint: You're looking<br>at it!</p>
+          <p class="exhibit-hint">click to explore →</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<
+<!-- ═══ 3: CHAOS INTRO ═══ -->
+<div class="page" data-page="3" style="background:white;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:4rem 5rem;text-align:center">
+
+
+  <h2 style="font-family:var(--sans);font-size:clamp(1.7rem,3.4vw,2.975rem);font-weight:700;color:var(--red);line-height:1.1;max-width:820px;margin-bottom:1.25rem">
+    I embrace chaos, diving into personal investigations and carving out structure where there is none.
+  </h2>
+
+  <p style="font-family:var(--sans);font-size:clamp(0.95rem,1.4vw,1.1rem);font-weight:300;color:var(--muted);max-width:620px;line-height:1.7;margin-bottom:1.75rem">
+    During my time at P&amp;G, I worked on a project with a broad question:
+  </p>
+
+  <!-- Paper note: question only -->
+  <div style="display:inline-block;transform:rotate(-1.5deg);margin-bottom:1.25rem">
+    <div style="background:
+      url('images/img-001-012dfa1a67.svg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22g%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.75%22 numOctaves=%224%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23g)%22 opacity=%220.055%22/%3E%3C/svg%3E'),
+      linear-gradient(135deg,#fdfaf4,#f8f3ea);
+      padding:1.25rem 2rem;
+      border:1px solid rgba(15,15,15,0.1);
+      box-shadow:3px 4px 14px rgba(15,15,15,0.12);
+      max-width:560px">
+      <div style="width:44px;height:14px;background:rgba(240,220,138,0.8);margin:-1.25rem auto 0.85rem;border-radius:1px;box-shadow:0 1px 3px rgba(15,15,15,0.1)"></div>
+      <p style="font-family:'DM Sans',sans-serif;font-size:1.05rem;font-weight:600;color:var(--text);line-height:1.5;text-align:center">
+        "How do we increase sales of our laser hair removal (IPL) home device?"
+      </p>
+    </div>
+  </div>
+
+  <!-- Text below the paper -->
+  <p style="font-family:var(--sans);font-size:1rem;font-weight:300;color:var(--muted);line-height:1.6">
+    That was it — no further instructions, no further details. So... I got crackin'.
+  </p>
+
+</div>
+
+<!-- ═══ 4: CHAOS INVESTIGATION BOARD ═══ -->
+<div class="page" data-page="4" style="background:#e8e2d4;padding:0;overflow:hidden;display:flex;flex-direction:column;font-family:var(--sans);position:relative;align-items:stretch;justify-content:flex-start">
+  <div style="height:48px;flex-shrink:0"></div>
+
+  <!-- TOP HALF -->
+  <div style="display:flex;flex:1;min-height:0;padding:0.8rem 1.2rem 0.3rem 3.5rem;gap:0.8rem;align-items:stretch">
+
+    <!-- LEFT TEXT -->
+    <div class="cluster-fade" data-cluster="1" style="flex:0 0 195px;padding-left:0;padding-right:0.5rem;display:flex;flex-direction:column;justify-content:center">
+      <p style="font-size:clamp(0.98rem,1.75vw,1.47rem);font-weight:700;color:var(--text);line-height:1.15;margin-bottom:0.3rem">A market problem that looked like pricing, turned out to be something</p>
+      <span style="display:inline-block;position:relative;padding:3px 8px;margin-top:0.1rem">
+        <svg style="position:absolute;inset:-5px -4px;width:calc(100% + 8px);height:calc(100% + 10px);overflow:visible" viewBox="0 0 130 36" xmlns="http://www.w3.org/2000/svg">
+          <path d="M6,18 C10,5 32,3 65,4 C98,5 122,8 124,18 C126,28 102,32 65,32 C28,32 4,28 6,18 Z" fill="none" stroke="#c8362a" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <span style="font-size:clamp(0.98rem,1.75vw,1.47rem);font-weight:700;color:var(--red);position:relative;z-index:1">much deeper.</span>
+      </span>
+    </div>
+
+    <!-- STEP 01 -->
+    <div class="cluster-fade" data-cluster="1" style="flex:1;display:flex;flex-direction:column;gap:0.4rem">
+      <div style="display:flex;align-items:center;gap:0.55rem;margin-bottom:0.3rem">
+        <div style="width:30px;height:30px;border-radius:50%;background:#1a1a1a;color:white;font-size:0.62rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">01</div>
+        <span style="font-family:var(--sans);font-size:1.05rem;font-weight:700;color:var(--text);letter-spacing:-0.005em">Understanding the market</span>
+      </div>
+
+      <div style="display:flex;gap:0.8rem;align-items:flex-start">
+
+        <!-- Cat Landscape -->
+        <div style="position:relative;transform:rotate(-1deg);flex:0 0 200px;margin-top:4px;z-index:1">
+          <div style="width:40px;height:14px;background:rgba(210,190,130,0.75);border-radius:2px;margin:0 auto -7px;position:relative;z-index:2;transform:rotate(-1.5deg)"></div>
+          <div style="background:url('images/img-001-012dfa1a67.svg viewBox=%220 0 300 300%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22n%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.68%22 numOctaves=%224%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23n)%22 opacity=%220.065%22/%3E%3C/svg%3E'),#faf7f0;border:1px solid rgba(15,15,15,0.08);box-shadow:0 1px 3px rgba(15,15,15,0.06),2px 4px 14px rgba(15,15,15,0.1);padding:0.7rem 0.75rem">
+            <p style="font-size:9.5px;letter-spacing:0.15em;text-transform:uppercase;color:rgba(15,15,15,0.38);margin-bottom:0.4rem;font-weight:600">Category Landscape</p>
+            <p style="font-size:0.82rem;color:var(--text);line-height:1.55;margin-bottom:0.35rem">IPL devices = high consideration purchase.</p>
+            <p style="font-size:0.8rem;color:var(--muted);margin-bottom:0.2rem">Purchase decision drivers:</p>
+            <p style="font-size:0.78rem;color:var(--text)">✓ &nbsp;safety</p>
+            <p style="font-size:0.78rem;color:var(--text)">✓ &nbsp;efficacy</p>
+            <p style="font-size:0.78rem;color:var(--text)">✓ &nbsp;pain level</p>
+            <p style="font-size:0.78rem;color:var(--text)">✓ &nbsp;number of flashes</p>
+            <p style="font-size:0.78rem;color:var(--text)">✓ &nbsp;price</p>
+          </div>
+          <!-- Sources yellow sticky overlapping bottom-right -->
+          <div style="position:absolute;bottom:-42px;right:-18px;z-index:10;transform:rotate(2.5deg)">
+            <div style="width:14px;height:14px;border-radius:50%;background:radial-gradient(circle at 38% 35%,#d4a82a,#7a5c08);box-shadow:0 2px 5px rgba(0,0,0,0.4);margin:0 auto -7px;position:relative;z-index:3"></div>
+            <div style="background:linear-gradient(135deg,#f0dc8a,#e8d478);padding:0.45rem 0.55rem;box-shadow:1px 2px 8px rgba(15,15,15,0.15);width:156px">
+              <p style="font-family:var(--sans);font-size:0.67rem;color:rgba(15,15,15,0.75);line-height:1.4;text-align:center">Sources: Review sites, forums, product listing pages</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Understanding market leader -->
+        <div style="position:relative;transform:rotate(0.8deg);flex:0 0 230px;margin-top:6px">
+          <div style="width:40px;height:14px;background:rgba(210,190,130,0.75);border-radius:2px;margin:0 auto -7px;position:relative;z-index:2;transform:rotate(1deg)"></div>
+          <div style="background:url('images/img-001-012dfa1a67.svg viewBox=%220 0 300 300%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22n%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.68%22 numOctaves=%224%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23n)%22 opacity=%220.065%22/%3E%3C/svg%3E'),#faf7f0;border:1px solid rgba(15,15,15,0.08);box-shadow:0 1px 3px rgba(15,15,15,0.06),2px 4px 14px rgba(15,15,15,0.1);padding:0.7rem 0.75rem">
+            <p style="font-family:var(--sans);font-size:0.75rem;font-weight:600;color:#000;margin-bottom:0.4rem;line-height:1.3">Understanding the market leader</p>
+            <p style="font-family:var(--sans);font-size:0.72rem;color:var(--text);line-height:1.55;margin-bottom:0.25rem">• Premium positioning</p>
+            <p style="font-family:var(--sans);font-size:0.72rem;color:var(--text);line-height:1.55;margin-bottom:0.25rem">• Seen as effective and safe</p>
+            <p style="font-family:var(--sans);font-size:0.72rem;color:var(--text);line-height:1.55;margin-bottom:0.4rem">• Credibility built through review volume</p>
+            <div style="display:flex;justify-content:center;margin-top:0.2rem">
+              <div style="background:white;padding:4px;box-shadow:1px 2px 5px rgba(15,15,15,0.15);transform:rotate(1.2deg);display:inline-block;line-height:0">
+                <img src="images/img-002-1f9e0c7221.png" style="width:130px;height:80px;object-fit:cover;object-position:center;display:block">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Understanding our own product + consumers value (stacked) -->
+        <div style="display:flex;flex-direction:column;gap:0.1rem;align-items:flex-start">
+          <div style="position:relative;transform:rotate(-0.8deg);flex:0 0 230px;width:230px">
+            <div style="width:40px;height:14px;background:rgba(210,190,130,0.75);border-radius:2px;margin:0 auto -7px;position:relative;z-index:2;transform:rotate(-1deg)"></div>
+            <div style="background:url('images/img-001-012dfa1a67.svg viewBox=%220 0 300 300%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22n%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.68%22 numOctaves=%224%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23n)%22 opacity=%220.065%22/%3E%3C/svg%3E'),#faf7f0;border:1px solid rgba(15,15,15,0.08);box-shadow:0 1px 3px rgba(15,15,15,0.06),2px 4px 14px rgba(15,15,15,0.1);padding:0.7rem 0.75rem">
+              <p style="font-family:var(--sans);font-size:0.75rem;font-weight:600;color:var(--text);margin-bottom:0.4rem;line-height:1.3">Understanding our own product:</p>
+              <p style="font-family:var(--sans);font-size:0.72rem;color:var(--text);line-height:1.55;margin-bottom:0.25rem">• Premium positioning</p>
+              <p style="font-family:var(--sans);font-size:0.72rem;color:var(--text);line-height:1.55;margin-bottom:0.25rem">• ~30% price premium vs. market leader</p>
+              <p style="font-family:var(--sans);font-size:0.72rem;color:var(--text);line-height:1.55">• Key differentiation: <span style="text-decoration:underline;color:var(--red);font-weight:600">Additional safety features</span></p>
+            </div>
+          </div>
+
+          <!-- Consumers value safety — below own product -->
+          <div style="flex:0 0 230px;width:230px;position:relative;margin-top:-55px;display:flex;align-items:flex-start;justify-content:center">
+            <div style="position:relative;text-align:center">
+              <p style="font-family:var(--sans);font-size:0.95rem;color:var(--red);line-height:1.3;font-weight:600;text-align:center">Safety mattered. So why weren't we winning?</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+
+
+    </div>
+
+<!-- 02: Forming the hypothesis — top right -->
+      <div class="cluster-fade" data-cluster="2" style="flex:1;display:flex;flex-direction:column;gap:0.4rem;padding-top:0.3rem;padding-left:1.5rem;min-width:180px">
+        <div style="display:flex;align-items:center;gap:0.55rem;margin-bottom:0.6rem">
+          <div style="width:30px;height:30px;border-radius:50%;background:#1a1a1a;color:white;font-size:0.62rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">02</div>
+          <span style="font-family:var(--sans);font-size:1.05rem;font-weight:700;color:var(--text);letter-spacing:-0.005em">Forming the hypothesis</span>
+        </div>
+        <p style="font-family:var(--hand);font-size:2rem;color:var(--red);line-height:1.2;text-align:center;margin-bottom:0.75rem">Research + gut instinct = hypothesis</p>
+        <!-- Red grainy rectangle with dotted border -->
+        <div style="position:relative;border-radius:10px;overflow:hidden;padding:1rem 1.25rem;background:linear-gradient(135deg,#c8362a,#b02a20);box-shadow:2px 3px 12px rgba(15,15,15,0.25);height:160px;display:flex;flex-direction:column;justify-content:center;transform:rotate(-1.5deg)">
+          <!-- grain overlay -->
+          <div style="position:absolute;inset:0;background:url('images/img-001-012dfa1a67.svg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22g%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.72%22 numOctaves=%224%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23g)%22 opacity=%220.15%22/%3E%3C/svg%3E');mix-blend-mode:overlay;pointer-events:none;border-radius:10px"></div>
+          <!-- dotted inner border -->
+          <div style="position:absolute;inset:5px;border:1.5px dashed rgba(255,160,150,0.55);border-radius:7px;pointer-events:none"></div>
+          <!-- text -->
+          <p style="position:relative;z-index:1;font-family:var(--sans);font-size:0.95rem;color:white;line-height:1.6;font-weight:400;text-align:center">Consumers perceived competitors as "safe enough."<br><span style="font-size:0.85rem;font-weight:300;opacity:0.85">So added safety didn't justify the premium.</span></p>
+        </div>
+      </div>
+
+
+  </div>
+
+  <!-- DIVIDER -->
+  <div style="height:1px;background:rgba(15,15,15,0.08);margin:0 1.5rem;flex-shrink:0"></div>
+
+  <!-- BOTTOM HALF -->
+  <div style="display:flex;flex:1;min-height:0;padding:0.5rem 1.2rem 0.3rem 3.5rem;gap:1rem;align-items:flex-start">
+
+    <!-- Step 02 -->
+    <div class="cluster-fade" data-cluster="3" style="flex:0 0 195px;padding-top:0.2rem;padding-left:0;padding-right:0.5rem">
+      <div style="display:flex;align-items:center;gap:0.55rem;margin-bottom:0.35rem">
+        <div style="width:30px;height:30px;border-radius:50%;background:#1a1a1a;color:white;font-size:0.62rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">03</div>
+        <span style="font-family:var(--sans);font-size:1.05rem;font-weight:700;color:var(--text);line-height:1.1;display:inline-block;letter-spacing:-0.005em">Testing hypothesis and validating at scale</span>
+      </div>
+      <p style="font-size:0.852rem;color:var(--muted);line-height:1.55;margin-bottom:0.6rem;margin-top:30px">20 in-depth interviews<br>across target segments.</p>
+      <div style="display:flex;gap:2px;opacity:0.2;margin-bottom:0.6rem">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="var(--text)"><circle cx="12" cy="7" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="var(--text)"><circle cx="12" cy="7" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="var(--text)"><circle cx="12" cy="7" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+      </div>
+      <p style="font-size:0.852rem;color:var(--muted);line-height:1.55;margin-bottom:0.5rem;margin-top:30px">Conducted quantitative survey with 200 respondents</p>
+    </div>
+
+    <div class="cluster-fade" data-cluster="3" style="flex:0 0 145px;display:flex;flex-direction:column;gap:0.5rem;margin-top:25px">
+      <div style="background:white;border:1px solid rgba(15,15,15,0.1);border-radius:3px;padding:0.5rem 0.6rem;box-shadow:0 1px 2px rgba(15,15,15,0.06),2px 3px 10px rgba(15,15,15,0.09);transform:rotate(-1.5deg)">
+        <span style="font-size:1.8rem;color:#ddd;line-height:0.6;display:block;margin-bottom:0.2rem;text-align:center">&ldquo;</span>
+        <p style="font-family:var(--hand);font-size:0.82rem;color:var(--text);line-height:1.3;text-align:center">I assumed all premium devices were <span style="background:rgba(240,218,130,0.75);padding:0 2px">already safe.</span>"</p>
+      </div>
+      <div style="background:white;border:1px solid rgba(15,15,15,0.1);border-radius:3px;padding:0.5rem 0.6rem;box-shadow:0 1px 2px rgba(15,15,15,0.06),2px 3px 10px rgba(15,15,15,0.09);transform:rotate(1.2deg);margin-top:2px">
+        <span style="font-size:1.8rem;color:#ddd;line-height:0.6;display:block;margin-bottom:0.2rem;text-align:center">&ldquo;</span>
+        <p style="font-family:var(--hand);font-size:0.82rem;color:var(--text);line-height:1.3;text-align:center">I <span style="background:rgba(240,218,130,0.75);padding:0 2px">didn't know why</span><br>this feature mattered."</p>
+      </div>
+      <div style="background:white;border:1px solid rgba(15,15,15,0.1);border-radius:3px;padding:0.5rem 0.6rem;box-shadow:0 1px 2px rgba(15,15,15,0.06),2px 3px 10px rgba(15,15,15,0.09);transform:rotate(-0.8deg);margin-top:2px">
+        <span style="font-size:1.8rem;color:#ddd;line-height:0.6;display:block;margin-bottom:0.2rem;text-align:center">&ldquo;</span>
+        <p style="font-family:var(--hand);font-size:0.82rem;color:var(--text);line-height:1.3;text-align:center">If both work, I'd rather <span style="background:rgba(240,218,130,0.75);padding:0 2px">save money.</span>"</p>
+      </div>
+    </div>
+
+    <div class="cluster-fade" data-cluster="3" style="flex:0 0 280px;display:flex;flex-direction:column;justify-content:center">
+      <div style="width:36px;height:13px;background:rgba(210,190,130,0.75);border-radius:2px;margin-bottom:-6px;position:relative;z-index:2;transform:rotate(1deg)"></div>
+      <div style="background:white;border:1px solid rgba(15,15,15,0.08);box-shadow:1px 2px 8px rgba(15,15,15,0.08);padding:1rem 1.1rem;transform:rotate(0.5deg);width:280px;height:280px;display:flex;flex-direction:column;justify-content:space-between;box-sizing:border-box">
+        <p style="font-size:0.72rem;font-weight:600;color:var(--text);text-align:center;line-height:1.3">Willingness to pay premium<br>(for our product)</p>
+        <div style="display:flex;gap:24px;align-items:flex-end;height:160px;padding:0 1.25rem;flex:1;margin:0.5rem 0">
+          <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:3px;height:100%">
+            <span style="font-size:0.72rem;font-weight:600">22%</span>
+            <div style="width:100%;height:22%;background:#9a9a9a;border-radius:3px 3px 0 0"></div>
+          </div>
+          <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:3px;height:100%">
+            <span style="font-size:0.72rem;font-weight:600">45%</span>
+            <div style="width:100%;height:45%;background:#c8362a;border-radius:3px 3px 0 0"></div>
+          </div>
+        </div>
+        <div style="display:flex;gap:10px;justify-content:center;margin-bottom:0.4rem">
+          <div style="display:flex;align-items:center;gap:4px"><div style="width:8px;height:8px;background:#9a9a9a;flex-shrink:0"></div><span style="font-size:0.6rem;color:var(--muted);white-space:nowrap">Before education</span></div>
+          <div style="display:flex;align-items:center;gap:4px"><div style="width:8px;height:8px;background:#c8362a;flex-shrink:0"></div><span style="font-size:0.6rem;color:var(--muted);white-space:nowrap">After education</span></div>
+        </div>
+        <p style="font-size:1rem;font-weight:700;color:var(--red);text-align:center;line-height:1.3">+2x lift after explaining safety.</p>
+      </div>
+    </div>
+
+    <div class="cluster-fade" data-cluster="4" style="flex:1;display:flex;align-items:center;justify-content:center;position:relative;margin-top:calc(-30px + 20px + 25px)">
+      <div class="real-answer-wrapper" id="realAnswerWrapper" style="width:550px;position:relative;display:flex;flex-direction:column">
+      <div style="width:14px;height:14px;border-radius:50%;background:radial-gradient(circle at 38% 35%,#d4a82a,#7a5c08);box-shadow:0 2px 5px rgba(0,0,0,0.4);position:absolute;top:-7px;left:50%;transform:translateX(-50%);z-index:10"></div>
+      <div class="real-answer-card" style="background:url('images/img-001-012dfa1a67.svg viewBox=%220 0 300 300%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22n%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.68%22 numOctaves=%224%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23n)%22 opacity=%220.065%22/%3E%3C/svg%3E'),#faf7f0;border:1px solid rgba(15,15,15,0.09);box-shadow:3px 4px 18px rgba(15,15,15,0.16);padding:1.4rem 1.6rem;padding-top:1.2rem;position:relative;flex:1;display:flex;flex-direction:column;justify-content:center;gap:0.75rem;text-align:center">
+        <p style="font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:rgba(15,15,15,0.35);font-weight:600;border-bottom:1px solid rgba(15,15,15,0.08);padding-bottom:0.4rem">The Real Answer</p>
+        <p style="font-size:1.25rem;font-weight:700;color:var(--text);line-height:1.2">This wasn't a pricing problem.</p>
+        <p style="font-family:var(--hand);font-size:1.65rem;color:var(--red);line-height:1.2;white-space:nowrap">It was an education problem.</p>
+        <div style="background:#fce8e6;border:1px solid rgba(200,100,90,0.15);padding:0.75rem 0.9rem;font-family:var(--sans);font-size:0.88rem;color:var(--text);line-height:1.55;box-shadow:1px 2px 5px rgba(15,15,15,0.08);margin-top:0.25rem;text-align:center">When consumers <span style="text-decoration:underline">understood</span> why our safety feature mattered, they <em>chose us.</em></div>
+        <!-- Dim overlay with eureka cue (hidden when revealed) -->
+        <div class="real-answer-dim">
+          <span class="eureka-cue">click for the<br>eureka moment!</span>
+        </div>
+      </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- ═══ 5: CHAOS SECTION 2 — The Insight ═══ -->
+<div class="page" data-page="5" style="background:#faf8f4;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden">
+
+  <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;max-width:1100px;width:100%;padding:3rem 4rem;gap:2.5rem">
+
+    <!-- Main line -->
+    <p style="font-family:var(--sans);font-size:clamp(1.8rem,3.2vw,2.8rem);font-weight:700;color:var(--text);line-height:1.18;text-align:center;letter-spacing:-0.01em;margin:0">
+      I embraced the chaos, <span style="font-family:var(--sans);font-weight:400;color:var(--red);font-size:clamp(1.9rem,3.4vw,3rem);letter-spacing:-0.005em">transforming...</span>
+    </p>
+
+    <!-- Two boxes side by side -->
+    <div style="display:flex;gap:2.5rem;align-items:stretch;width:100%;justify-content:center;flex-wrap:wrap">
+
+      <!-- LEFT: broad business question -->
+      <div style="flex:1;min-width:280px;max-width:460px;display:flex;flex-direction:column;align-items:center;gap:0.85rem">
+        <p style="font-family:var(--sans);font-size:1rem;font-weight:400;color:var(--muted);text-align:center;margin:0;letter-spacing:0.01em">A broad business question...</p>
+        <div style="position:relative;width:100%;padding-top:14px">
+          <!-- sticky tape -->
+          <div style="position:absolute;top:0;left:50%;transform:translateX(-50%) rotate(-1.5deg);width:80px;height:18px;background:rgba(240,220,138,0.85);border-radius:1px;box-shadow:0 1px 3px rgba(15,15,15,0.12);z-index:2"></div>
+          <div style="background:url('images/img-001-012dfa1a67.svg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22g%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.75%22 numOctaves=%224%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23g)%22 opacity=%220.055%22/%3E%3C/svg%3E'),linear-gradient(135deg,#fdfaf4,#f8f3ea);padding:1.6rem 1.75rem;border:1px solid rgba(15,15,15,0.1);box-shadow:3px 4px 14px rgba(15,15,15,0.12);border-radius:12px;transform:rotate(-0.8deg)">
+            <p style="font-family:'DM Sans',sans-serif;font-size:1.02rem;font-weight:600;color:var(--text);line-height:1.5;text-align:center;margin:0">
+              "How do we increase sales of our laser hair removal (IPL) home device?"
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: specific actionable goal -->
+      <div style="flex:1;min-width:280px;max-width:460px;display:flex;flex-direction:column;align-items:center;gap:0.85rem">
+        <p style="font-family:var(--sans);font-size:1rem;font-weight:400;color:var(--muted);text-align:center;margin:0;letter-spacing:0.01em">...into specific &amp; actionable goals.</p>
+        <div style="position:relative;width:100%;padding-top:14px">
+          <!-- sticky tape -->
+          <div style="position:absolute;top:0;left:50%;transform:translateX(-50%) rotate(1.5deg);width:80px;height:18px;background:rgba(240,220,138,0.85);border-radius:1px;box-shadow:0 1px 3px rgba(15,15,15,0.12);z-index:2"></div>
+          <div style="background:url('images/img-001-012dfa1a67.svg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22g%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.75%22 numOctaves=%224%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23g)%22 opacity=%220.055%22/%3E%3C/svg%3E'),linear-gradient(135deg,#fdfaf4,#f8f3ea);padding:1.6rem 1.75rem;border:1px solid rgba(15,15,15,0.1);box-shadow:3px 4px 14px rgba(15,15,15,0.12);border-radius:12px;transform:rotate(0.8deg)">
+            <p style="font-family:'DM Sans',sans-serif;font-size:1.02rem;font-weight:600;color:var(--red);line-height:1.5;text-align:center;margin:0">
+              "How do we educate consumers on why the added safety features matter so the premium pricing feels justified?"
+            </p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Concluding statement -->
+    <p style="font-family:var(--sans);font-size:clamp(0.98rem,1.5vw,1.2rem);font-weight:300;color:var(--text);line-height:1.6;text-align:center;max-width:760px;margin:0.5rem 0 0">
+      I find that I genuinely enjoy connecting scattered signals<br>
+      and slowly creating clarity from them.
+    </p>
+
+  </div>
+
+</div>
+
+<!-- ═══ 6: WHEN I'M IN ═══ -->
+<div class="page" data-page="6" id="page6" style="background:var(--red);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;padding:0">
+
+  <!-- Grain overlay -->
+  <div style="position:absolute;inset:0;pointer-events:none;z-index:1;opacity:0.18;background-image:url(&quot;data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E&quot;)"></div>
+
+  <!-- Headline centered -->
+  <div style="position:absolute;top:5.5rem;left:0;right:0;z-index:10;text-align:center;padding:0 4rem">
+    <p style="font-family:'DM Sans',sans-serif;font-size:clamp(1.3rem,2.2vw,1.85rem);font-weight:700;color:rgba(255,255,255,0.95);line-height:1.2;margin:0 0 0.6rem;letter-spacing:-0.01em">Once I'm in, I stop thinking in terms of "my scope".</p>
+    <p style="font-family:'DM Sans',sans-serif;font-size:clamp(0.85rem,1.3vw,1rem);font-weight:300;color:rgba(255,255,255,0.65);line-height:1.55;margin:0">I naturally start learning the surrounding systems, constraints, and skillsets needed to move the work forward.</p>
+  </div>
+
+  <!-- Explore cue — positioned just below center card by JS -->
+  <div id="p6-cue" style="position:absolute;z-index:10;opacity:0;transition:opacity 1s ease;white-space:nowrap;text-align:center;left:50%;transform:translateX(-50%)">
+    <p style="font-family:'Caveat',cursive;font-size:0.9rem;color:rgba(255,255,255,0.85);margin:0">Click on each node / subnode to explore</p>
+  </div>
+
+  <!-- SVG canvas for lines -->
+  <svg id="p6-svg" style="position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-events:none;overflow:visible"></svg>
+
+  <!-- Mind map container -->
+  <div id="p6-map" style="position:absolute;inset:0;z-index:3;width:100%;height:100%">
+
+    <!-- CENTER CARD -->
+    <div id="p6-center" class="p6-node p6-center-card" style="position:absolute;top:58%;left:50%;transform:translate(-50%,-50%)">
+      <div style="background:url('data:image/svg+xml,%3Csvg viewBox=\'0 0 200 200\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'g\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.75\' numOctaves=\'4\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23g)\' opacity=\'0.06\'/%3E%3C/svg%3E'),#f5f2ed;padding:1.2rem 1.6rem 1.3rem;border:1px solid rgba(15,15,15,0.12);box-shadow:0 4px 24px rgba(0,0,0,0.22),0 1px 4px rgba(0,0,0,0.1);border-radius:3px;text-align:center;min-width:190px;max-width:220px;position:relative">
+        <!-- pin -->
+        <div style="position:absolute;top:-10px;left:50%;transform:translateX(-50%);width:10px;height:10px;background:#b0aca6;border-radius:50%;box-shadow:0 2px 4px rgba(0,0,0,0.25)"></div>
+        <p style="font-family:'Courier New',monospace;font-size:11px;letter-spacing:0.22em;color:rgba(15,15,15,0.95);font-weight:700;margin:0 0 0.6rem;text-transform:uppercase">Brand Manager</p>
+        <!-- profile picture circle -->
+        <div style="width:54px;height:54px;border-radius:50%;border:2px solid rgba(15,15,15,0.14);margin:0 auto 0.7rem;overflow:hidden;position:relative">
+          <img src="images/megan-photo.png" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block">
+        </div>
+        <p style="font-family:'DM Sans',sans-serif;font-size:0.72rem;font-weight:300;color:rgba(15,15,15,0.65);line-height:1.5;margin:0">Growth strategy, GTM planning, commercialization, campaigns, consumer insights, and cross-functional execution.</p>
+      </div>
+    </div>
+
+    <!-- FUNCTION NODES (hidden initially, positioned via JS) -->
+    <div id="p6-fn-ai"       class="p6-fn-node" data-fn="ai"       style="display:none;position:absolute"><div class="p6-fn-pill">A&amp;I</div></div>
+    <div id="p6-fn-gtm"      class="p6-fn-node" data-fn="gtm"      style="display:none;position:absolute"><div class="p6-fn-pill">Sales</div></div>
+    <div id="p6-fn-creative" class="p6-fn-node" data-fn="creative" style="display:none;position:absolute"><div class="p6-fn-pill">Creative<br>Production</div></div>
+    <div id="p6-fn-finance"  class="p6-fn-node" data-fn="finance"  style="display:none;position:absolute"><div class="p6-fn-pill">Commercial<br>Finance</div></div>
+
+  </div>
+
+  <!-- Popup annotation -->
+  <div id="p6-popup" style="display:none;position:absolute;z-index:20;max-width:260px;pointer-events:none">
+    <div style="background:url('data:image/svg+xml,%3Csvg viewBox=\'0 0 200 200\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'g\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.75\' numOctaves=\'4\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23g)\' opacity=\'0.06\'/%3E%3C/svg%3E'),#fdfaf4;padding:0.9rem 1.1rem;border:1px solid rgba(15,15,15,0.12);box-shadow:3px 5px 18px rgba(0,0,0,0.2);border-radius:2px;transform:rotate(-1.2deg)">
+      <div style="position:absolute;top:-8px;left:18px;width:28px;height:12px;background:rgba(240,220,138,0.9);border-radius:1px;box-shadow:0 1px 3px rgba(0,0,0,0.12)"></div>
+      <p id="p6-popup-text" style="font-family:'DM Sans',sans-serif;font-size:0.78rem;font-weight:300;color:rgba(15,15,15,0.82);line-height:1.55;margin:0.3rem 0 0"></p>
+    </div>
+  </div>
+
+</div>
+
+<style>
+.p6-fn-pill{
+  font-family:'Courier New',monospace;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;font-weight:700;
+  color:rgba(255,255,255,0.92);background:rgba(255,255,255,0.13);
+  border:1px solid rgba(255,255,255,0.35);border-radius:2px;
+  padding:0.5rem 0.9rem;cursor:pointer;text-align:center;line-height:1.4;
+  transition:background 0.2s,border-color 0.2s;white-space:nowrap;
+  box-shadow:0 2px 8px rgba(0,0,0,0.15);
+}
+.p6-fn-pill:hover,.p6-fn-node.expanded .p6-fn-pill{background:rgba(255,255,255,0.22);border-color:rgba(255,255,255,0.7)}
+.p6-sub-node{position:absolute;display:none}
+.p6-sub-pill{
+  font-family:'DM Sans',sans-serif;font-size:0.72rem;font-weight:400;
+  color:rgba(255,255,255,0.82);background:rgba(0,0,0,0.18);
+  border:1px solid rgba(255,255,255,0.22);border-radius:50px;
+  padding:0.3rem 0.75rem;cursor:pointer;white-space:nowrap;
+  transition:background 0.2s,color 0.2s;
+  box-shadow:0 1px 6px rgba(0,0,0,0.12);
+}
+.p6-sub-pill:hover{background:rgba(255,255,255,0.18);color:white}
+</style>
+
+<script>
+/* ═══════════════════════════════════════════════
+   ANIMATED SCROLL GUARD
+   — Slows scroll snap on pages 4, 6, 7 while
+     animation is in progress by intercepting wheel
+     events and showing a gentle "you're missing
+     something" nudge before allowing snap.
+═══════════════════════════════════════════════ */
+const animatedScrollGuard = (function(){
+  const activePages = new Set();
+  const skipFns = {};   // pageIdx → skipFn
+  const scroller = document.getElementById('scroller');
+
+  // ── Nudge banner ──────────────────────────────────────────────
+  const nudge = document.createElement('div');
+  nudge.id = 'anim-nudge';
+  nudge.innerHTML =
+    "<span style='white-space:nowrap'>👀 Don't scroll just yet, you may miss something! &nbsp;|&nbsp; <span id='anim-nudge-skip' style='cursor:pointer;text-decoration:underline;text-underline-offset:2px'>Click to skip animation</span></span>";
+  Object.assign(nudge.style, {
+    position:   'fixed',
+    bottom:     '4.5rem',
+    left:       '50%',
+    transform:  'translateX(-50%) translateY(20px)',
+    background: 'rgba(15,15,15,0.85)',
+    color:      'white',
+    fontFamily: "'DM Sans', sans-serif",
+    fontSize:   '0.78rem',
+    fontWeight: '400',
+    letterSpacing: '0.03em',
+    padding:    '0.55rem 1.4rem',
+    borderRadius: '50px',
+    zIndex:     '9000',
+    opacity:    '0',
+    pointerEvents: 'none',
+    transition: 'opacity 0.35s ease, transform 0.35s ease',
+    whiteSpace: 'nowrap',
+    display:    'flex',
+    alignItems: 'center',
+  });
+  document.body.appendChild(nudge);
+
+  // Wire the "Click to skip animation" span
+  const skipSpan = nudge.querySelector('#anim-nudge-skip');
+  skipSpan.addEventListener('click', (e) => {
+    e.stopPropagation();
+    runCurrentSkip();
+    hideNudge();
+  });
+
+  function runCurrentSkip(){
+    // Find the first active page and call its skip function
+    for (const idx of activePages) {
+      if (skipFns[idx]) { skipFns[idx](); break; }
+    }
+  }
+
+  let nudgeTimer = null;
+  function showNudge() {
+    clearTimeout(nudgeTimer);
+    nudge.style.pointerEvents = 'auto';
+    nudge.style.opacity = '1';
+    nudge.style.transform = 'translateX(-50%) translateY(0)';
+    nudgeTimer = setTimeout(hideNudge, 4000);
+  }
+  function hideNudge() {
+    clearTimeout(nudgeTimer);
+    nudge.style.opacity = '0';
+    nudge.style.transform = 'translateX(-50%) translateY(20px)';
+    nudge.style.pointerEvents = 'none';
+  }
+
+  // ── Page click → skip ─────────────────────────────────────────
+  // Register a click listener on each animated page element so
+  // clicking anywhere on the page also triggers skip.
+  function registerPageClickListener(pageEl, pageIdx) {
+    pageEl.addEventListener('click', (e) => {
+      if (!activePages.has(pageIdx)) return;
+      if (skipFns[pageIdx]) skipFns[pageIdx]();
+      hideNudge();
+    });
+  }
+
+  // ── Wheel / touch → show nudge ───────────────────────────────
+  let scrollCount = 0;
+  let resistTimer = null;
+
+  function getCurrentPageIndex(){
+    if (!scroller) return -1;
+    const pages = scroller.querySelectorAll('.page');
+    const scrollTop = scroller.scrollTop;
+    let closest = -1, minDist = Infinity;
+    pages.forEach((p, i) => {
+      const d = Math.abs(p.offsetTop - scrollTop);
+      if (d < minDist) { minDist = d; closest = i; }
+    });
+    return closest;
+  }
+
+  if (scroller) {
+    scroller.addEventListener('wheel', (e) => {
+      const pageIdx = getCurrentPageIndex();
+      if (!activePages.has(pageIdx)) return;
+      showNudge();
+      clearTimeout(resistTimer);
+      resistTimer = setTimeout(() => { scrollCount = 0; }, 1500);
+    }, { passive: true });
+
+    scroller.addEventListener('touchmove', (e) => {
+      const pageIdx = getCurrentPageIndex();
+      if (!activePages.has(pageIdx)) return;
+      showNudge();
+    }, { passive: true });
+  }
+
+  return {
+    markActive(pageIdx)  { activePages.add(pageIdx); },
+    markInactive(pageIdx){ activePages.delete(pageIdx); hideNudge(); scrollCount = 0; },
+    registerSkip(pageIdx, fn, pageEl){
+      skipFns[pageIdx] = fn;
+      if (pageEl) registerPageClickListener(pageEl, pageIdx);
+    },
+  };
+})();
+
+</script>
+
+<script>
+(function(){
+  /* ── DATA ── */
+  const FN_DATA = {
+    ai: {
+      label:'A&I',
+      subs:[
+        {id:'ai-pricing',  label:'Pricing analytics',      note:'Started analyzing historical pricing and promotional trends myself to better understand pricing corridors and commercial trade-offs.'},
+        {id:'ai-sig',      label:'Significance analysis',  note:'Learned how significance testing worked so I could better judge whether observed consumer patterns were actually meaningful.'},
+        {id:'ai-research', label:'Research design',        note:'Became increasingly involved in qualitative and quantitative research design to ensure studies actually answered the underlying business questions.'},
+        {id:'ai-forecast', label:'Forecasting',            note:'Learned to build forecasting models myself to better understand which commercial levers could realistically close growth gaps when plans changed unexpectedly.'},
+      ]
+    },
+    gtm: {
+      label:'Sales',
+      subs:[
+        {id:'gtm-levers',  label:'Growth levers',   note:'Went deeper into retailer and sales dynamics to understand which levers could realistically unlock growth when plans shifted.'},
+        {id:'gtm-sales',   label:'Sales enablement', note:'Started building sales decks myself to better shape how product stories and commercial value were communicated to retail partners.'},
+      ]
+    },
+    creative: {
+      label:'Creative Production',
+      subs:[
+        {id:'cr-ai',   label:'AI-assisted ideation & storyboarding', note:'Experimented with AI-generated storyboard concepts to accelerate early-stage creative ideation with production teams.'},
+        {id:'cr-prod', label:'Production workflows',                 note:'Learned more about production terminology and workflows to better bridge communication gaps between business and creative teams.'},
+      ]
+    },
+    finance: {
+      label:'Commercial Finance',
+      subs:[
+        {id:'fin-model', label:'Financial modeling', note:'Learned basic financial modeling to better evaluate whether proposed initiatives were commercially viable long-term.'},
+      ]
+    },
+  };
+
+  /* function node positions: [offsetX%, offsetY%] from center — shifted down for breathing room */
+  const FN_POSITIONS = {
+    ai:       [-22, -8],
+    gtm:      [ 22, -8],
+    creative: [ 24,  34],
+    finance:  [-20,  34],
+  };
+
+  /* subnode angular offsets (degrees) and radii (px) */
+  const SUB_CONFIGS = {
+    ai:       [{a:-60,r:115},{a:-150,r:110},{a:150,r:115},{a:-30,r:115}],
+    gtm:      [{a:-50,r:105},{a:15,r:100}],
+    creative: [{a:-35,r:125},{a:-15,r:105}],
+    finance:  [{a:-135,r:130},{a:-160,r:115}],
+  };
+
+  let initiated = false;
+  let svgEl, mapEl, pageEl;
+  const lines = {}; // key → SVGLine
+  const subLines = {}; // subId → SVGLine
+
+  function init(){
+    pageEl = document.getElementById('page6');
+    svgEl  = document.getElementById('p6-svg');
+    mapEl  = document.getElementById('p6-map');
+    if (!pageEl || !svgEl || !mapEl) return;
+
+    /* show function nodes staggered after 1.5s */
+    const fnKeys = ['ai','gtm','creative','finance'];
+    fnKeys.forEach((key, i) => {
+      p6SkipTimers.push(setTimeout(() => showFnNode(key), 400 + i * 500));
+    });
+
+    /* show cue just below center card after last node */
+    p6SkipTimers.push(setTimeout(() => {
+      const cue = document.getElementById('p6-cue');
+      const center = document.getElementById('p6-center');
+      if (cue && center) {
+        const pr = getPageRect();
+        const cr = center.getBoundingClientRect();
+        const cardBottom = cr.bottom - pr.top;
+        cue.style.top = (cardBottom + 10) + 'px';
+        cue.style.opacity = '1';
+      }
+    }, 400 + fnKeys.length * 500 + 400));
+
+    /* fn node clicks */
+    document.querySelectorAll('.p6-fn-node').forEach(el => {
+      el.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const key = el.dataset.fn;
+        const isExpanded = el.classList.contains('expanded');
+        if (isExpanded) collapseSubnodes(key, el);
+        else expandSubnodes(key, el);
+      });
+    });
+
+    /* click outside → hide popup */
+    document.getElementById('scroller').addEventListener('click', hidePopup);
+  }
+
+  function getPageRect(){ return pageEl.getBoundingClientRect(); }
+  function getCenter(){
+    const r = getPageRect();
+    return { x: r.width/2, y: r.height * 0.58 };
+  }
+
+  function showFnNode(key){
+    const el = document.getElementById('p6-fn-' + key);
+    if (!el) return;
+    const [px, py] = FN_POSITIONS[key];
+    const r = getPageRect();
+    const c = getCenter();
+    const cx = c.x, cy = c.y;
+    const tx = cx + (px/100)*r.width;
+    const ty = cy + (py/100)*r.height;
+
+    el.style.left = tx + 'px';
+    el.style.top  = ty + 'px';
+    el.style.transform = 'translate(-50%,-50%)';
+    el.style.opacity = '0';
+    el.style.display = 'block';
+
+    /* draw line from center */
+    const line = drawLine(cx, cy, tx, ty, 'rgba(255,255,255,0.22)', 'p6-line-'+key);
+    lines[key] = line;
+    animateLine(line, cx, cy, tx, ty, 900 + Math.random()*300);
+
+    /* fade node in */
+    p6NodeTimers.push(setTimeout(() => { el.style.transition = 'opacity 0.8s ease'; el.style.opacity = '1'; }, 200));
+  }
+
+  function expandSubnodes(key, fnEl){
+    fnEl.classList.add('expanded');
+    const subs = FN_DATA[key].subs;
+    const configs = SUB_CONFIGS[key] || [];
+    const fnRect = fnEl.getBoundingClientRect();
+    const pageRect = getPageRect();
+    const fx = fnRect.left + fnRect.width/2  - pageRect.left;
+    const fy = fnRect.top  + fnRect.height/2 - pageRect.top;
+
+    subs.forEach((sub, i) => {
+      const cfg = configs[i] || {a: i*80, r:140};
+      const rad = cfg.a * Math.PI / 180;
+      // Use stable jitter stored on data object so re-expand lands in same spot
+      if (sub._jitter === undefined) sub._jitter = (Math.random()-0.5)*18;
+      const sx = fx + (cfg.r + sub._jitter) * Math.cos(rad);
+      const sy = fy + (cfg.r + sub._jitter) * Math.sin(rad);
+
+      let subEl = document.getElementById('p6-sub-' + sub.id);
+      if (!subEl){
+        subEl = document.createElement('div');
+        subEl.id = 'p6-sub-' + sub.id;
+        subEl.className = 'p6-sub-node';
+        subEl.dataset.note = sub.note;
+        subEl.innerHTML = '<div class="p6-sub-pill">' + sub.label + '</div>';
+        mapEl.appendChild(subEl);
+        subEl.querySelector('.p6-sub-pill').addEventListener('click', (e) => {
+          e.stopPropagation();
+          showPopup(subEl, sub.note);
+        });
+      }
+
+      subEl.style.left = sx + 'px';
+      subEl.style.top  = sy + 'px';
+      subEl.style.transform = 'translate(-50%,-50%)';
+      // Clear transition first so setting opacity:0 doesn't animate
+      subEl.style.transition = 'none';
+      subEl.style.opacity = '0';
+      subEl.style.display = 'block';
+
+      const sline = drawLine(fx, fy, sx, sy, 'rgba(255,255,255,0.15)', 'p6-sline-'+sub.id);
+      subLines[sub.id] = sline;
+      animateLine(sline, fx, fy, sx, sy, 600 + i*150);
+
+      // Force reflow so the opacity:0 is committed before we re-enable transition
+      setTimeout(() => {
+        subEl.style.transition = 'opacity 0.6s ease';
+        subEl.style.opacity = '1';
+      }, 30 + i*150);
+    });
+  }
+
+  const subLineTimers = {}; // track pending removal timers per subId
+
+  function collapseSubnodes(key, fnEl){
+    fnEl.classList.remove('expanded');
+    FN_DATA[key].subs.forEach(sub => {
+      const subEl = document.getElementById('p6-sub-' + sub.id);
+      if (subEl){
+        subEl.style.transition = 'opacity 0.4s ease';
+        subEl.style.opacity = '0';
+        setTimeout(() => {
+          if (subEl.style.opacity === '0') subEl.style.display = 'none';
+        }, 420);
+      }
+      const sl = subLines[sub.id];
+      if (sl){
+        // Fade the SVG line out via CSS opacity transition before removing
+        sl.style.transition = 'opacity 0.35s ease';
+        sl.style.opacity = '0';
+        const timer = setTimeout(()=>{
+          if (sl.parentNode) sl.remove();
+          delete subLines[sub.id];
+          delete subLineTimers[sub.id];
+        }, 380);
+        subLineTimers[sub.id] = timer;
+      }
+    });
+    hidePopup();
+  }
+
+  const lineRafs = {}; // id → rAF handle
+
+  function drawLine(x1,y1,x2,y2,stroke,id){
+    // Cancel any pending removal for this line
+    const subId = id.replace('p6-sline-','');
+    if (subLineTimers[subId]){
+      clearTimeout(subLineTimers[subId]);
+      delete subLineTimers[subId];
+    }
+
+    // Cancel any in-progress animation for this line
+    if (lineRafs[id]){
+      cancelAnimationFrame(lineRafs[id]);
+      delete lineRafs[id];
+    }
+
+    let line = document.getElementById(id);
+    if (!line){
+      line = document.createElementNS('http://www.w3.org/2000/svg','line');
+      line.id = id;
+      svgEl.appendChild(line);
+    }
+    line.setAttribute('stroke', stroke);
+    line.setAttribute('stroke-width','1.8');
+    line.style.transition = '';  // clear any lingering fade-out transition
+    line.style.opacity = '1';
+    line.setAttribute('x1', x1); line.setAttribute('y1', y1);
+    line.setAttribute('x2', x1); line.setAttribute('y2', y1); /* start collapsed */
+    return line;
+  }
+
+  function animateLine(line, x1, y1, x2, y2, duration){
+    const id = line.id;
+    const start = performance.now();
+    function step(now){
+      // If line was removed from DOM, stop
+      if (!line.parentNode){ delete lineRafs[id]; return; }
+      const t = Math.min((now-start)/duration, 1);
+      const ease = 1 - Math.pow(1-t, 3);
+      line.setAttribute('x2', x1 + (x2-x1)*ease);
+      line.setAttribute('y2', y1 + (y2-y1)*ease);
+      if (t < 1){
+        lineRafs[id] = requestAnimationFrame(step);
+      } else {
+        line.setAttribute('x2', x2);
+        line.setAttribute('y2', y2);
+        delete lineRafs[id];
+      }
+    }
+    lineRafs[id] = requestAnimationFrame(step);
+  }
+
+  function showPopup(anchorEl, text){
+    const popup = document.getElementById('p6-popup');
+    const textEl = document.getElementById('p6-popup-text');
+    textEl.textContent = '"' + text + '"';
+    popup.style.display = 'block';
+
+    const pr = getPageRect();
+    const ar = anchorEl.getBoundingClientRect();
+    let left = ar.left - pr.left + ar.width/2 - 130;
+    let top  = ar.top  - pr.top  - 140;
+    if (left < 10) left = 10;
+    if (left + 270 > pr.width) left = pr.width - 275;
+    if (top < 60) top = ar.top - pr.top + ar.height + 12;
+    popup.style.left = left + 'px';
+    popup.style.top  = top  + 'px';
+    popup.style.pointerEvents = 'none';
+  }
+
+  function hidePopup(){
+    document.getElementById('p6-popup').style.display = 'none';
+  }
+
+  const fnKeys = ['ai','gtm','creative','finance'];
+  let p6AnimDone = false;
+  let p6SkipTimers = [];
+  let p6NodeTimers = []; // opacity fade timers for fn nodes
+
+  function p6Skip(){
+    // Cancel all pending timers (stagger + done timers + node opacity timers)
+    p6SkipTimers.forEach(clearTimeout);
+    p6SkipTimers = [];
+    p6NodeTimers.forEach(clearTimeout);
+    p6NodeTimers = [];
+    // Cancel all in-progress line animation RAFs
+    Object.keys(lineRafs).forEach(k => { cancelAnimationFrame(lineRafs[k]); delete lineRafs[k]; });
+
+    // Snap all function nodes to final positions instantly (no transition)
+    fnKeys.forEach(key => {
+      const el = document.getElementById('p6-fn-'+key);
+      if (!el) return;
+      const [px, py] = FN_POSITIONS[key];
+      const r = getPageRect();
+      const c = getCenter();
+      const cx = c.x, cy = c.y;
+      const tx = cx + (px/100)*r.width;
+      const ty = cy + (py/100)*r.height;
+      el.style.transition = 'none';
+      el.style.left = tx + 'px';
+      el.style.top  = ty + 'px';
+      el.style.transform = 'translate(-50%,-50%)';
+      el.style.display = 'block';
+      el.style.opacity = '1';
+      // Draw / snap the fn→center line
+      let line = document.getElementById('p6-line-'+key);
+      if (!line) {
+        line = document.createElementNS('http://www.w3.org/2000/svg','line');
+        line.id = 'p6-line-'+key;
+        svgEl.appendChild(line);
+      }
+      line.setAttribute('stroke','rgba(255,255,255,0.22)');
+      line.setAttribute('stroke-width','1.8');
+      line.setAttribute('x1', cx); line.setAttribute('y1', cy);
+      line.setAttribute('x2', tx); line.setAttribute('y2', ty);
+      lines[key] = line;
+
+      // Expand subnodes for this key instantly (skip animation)
+      // Use tx/ty directly — getBoundingClientRect unreliable before paint
+      const subs = FN_DATA[key].subs;
+      const configs = SUB_CONFIGS[key] || [];
+      const fx = tx;
+      const fy = ty;
+
+      el.classList.add('expanded');
+      subs.forEach((sub, i) => {
+        const cfg = configs[i] || {a: i*80, r:140};
+        const rad = cfg.a * Math.PI / 180;
+        if (sub._jitter === undefined) sub._jitter = (Math.random()-0.5)*18;
+        const sx = fx + (cfg.r + sub._jitter) * Math.cos(rad);
+        const sy = fy + (cfg.r + sub._jitter) * Math.sin(rad);
+
+        let subEl = document.getElementById('p6-sub-' + sub.id);
+        if (!subEl){
+          subEl = document.createElement('div');
+          subEl.id = 'p6-sub-' + sub.id;
+          subEl.className = 'p6-sub-node';
+          subEl.dataset.note = sub.note;
+          subEl.innerHTML = '<div class="p6-sub-pill">' + sub.label + '</div>';
+          mapEl.appendChild(subEl);
+          subEl.querySelector('.p6-sub-pill').addEventListener('click', (e) => {
+            e.stopPropagation();
+            showPopup(subEl, sub.note);
+          });
+        }
+        subEl.style.transition = 'none';
+        subEl.style.left = sx + 'px';
+        subEl.style.top  = sy + 'px';
+        subEl.style.transform = 'translate(-50%,-50%)';
+        subEl.style.display = 'block';
+        subEl.style.opacity = '1';
+
+        // Draw sub line instantly
+        let sline = document.getElementById('p6-sline-'+sub.id);
+        if (!sline){
+          sline = document.createElementNS('http://www.w3.org/2000/svg','line');
+          sline.id = 'p6-sline-'+sub.id;
+          svgEl.appendChild(sline);
+        }
+        sline.setAttribute('stroke','rgba(255,255,255,0.15)');
+        sline.setAttribute('stroke-width','1.8');
+        sline.setAttribute('x1', fx); sline.setAttribute('y1', fy);
+        sline.setAttribute('x2', sx); sline.setAttribute('y2', sy);
+        subLines[sub.id] = sline;
+      });
+    });
+
+    // Show cue
+    const cue = document.getElementById('p6-cue');
+    const center = document.getElementById('p6-center');
+    if (cue && center) {
+      const pr = getPageRect();
+      const cr = center.getBoundingClientRect();
+      cue.style.top = (cr.bottom - pr.top + 10) + 'px';
+      cue.style.transition = 'none';
+      cue.style.opacity = '1';
+    }
+    p6AnimDone = true;
+    animatedScrollGuard.markInactive(6);
+  }
+
+  // Register with guard (also wires page click → skip)
+  animatedScrollGuard.registerSkip(6, p6Skip, document.getElementById('page6'));
+
+  /* ── OBSERVE: trigger init when page scrolls into view ── */
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting && !initiated){
+        initiated = true;
+        p6AnimDone = false;
+        init();
+        // Mark guard inactive after all nodes have appeared
+        const doneDuration = 400 + fnKeys.length * 500 + 400 + 500;
+        const doneT = setTimeout(() => { p6AnimDone = true; animatedScrollGuard.markInactive(6); }, doneDuration);
+        p6SkipTimers.push(doneT);
+        animatedScrollGuard.markActive(6);
+      }
+      if (!e.isIntersecting){
+        // Reset on any scroll away (forward or back)
+        initiated = false;
+        p6AnimDone = false;
+        resetPage();
+        animatedScrollGuard.markInactive(6);
+      }
+    });
+  }, {threshold: 0.5});
+
+  function resetPage(){
+    p6SkipTimers.forEach(clearTimeout);
+    p6SkipTimers = [];
+    p6NodeTimers.forEach(clearTimeout);
+    p6NodeTimers = [];
+    fnKeys.forEach(key => {
+      const el = document.getElementById('p6-fn-'+key);
+      if (el){ el.style.display='none'; el.style.opacity='0'; el.style.transition=''; el.classList.remove('expanded'); }
+      const ln = document.getElementById('p6-line-'+key);
+      if (ln) ln.remove();
+    });
+    /* remove sub nodes and lines */
+    document.querySelectorAll('.p6-sub-node').forEach(n => n.remove());
+    Object.keys(subLines).forEach(k => { if(subLines[k].parentNode) subLines[k].remove(); delete subLines[k]; });
+    Object.keys(lineRafs).forEach(k => { cancelAnimationFrame(lineRafs[k]); delete lineRafs[k]; });
+    const cue = document.getElementById('p6-cue');
+    if (cue) { cue.style.transition = 'none'; cue.style.opacity = '0'; setTimeout(()=>{ if(cue) cue.style.transition=''; }, 50); }
+    hidePopup();
+    p6AnimDone = false;
+  }
+
+  window.addEventListener('load', () => {
+    const p6 = document.getElementById('page6');
+    if (p6) obs.observe(p6);
+  });
+})();
+</script>
+
+<!-- ═══ 7: SYNTHESIS ═══ -->
+<style>
+#syn-intro-wrap {
+  text-align:left;
+  margin-bottom:0;
+  min-height:3em;
+  display:flex;align-items:flex-start;justify-content:flex-start;flex-wrap:wrap;
+}
+#syn-intro-text {
+  font-family:var(--sans);
+  font-size:clamp(1.5rem,2.6vw,2.2rem);
+  font-weight:700;
+  color:white;
+  line-height:1.3;
+  letter-spacing:-0.01em;
+}
+#syn-cursor {
+  display:inline-block;
+  width:2px;
+  height:1.1em;
+  background:var(--red);
+  margin-left:3px;
+  vertical-align:middle;
+  animation:synBlink 0.75s step-end infinite;
+}
+@keyframes synBlink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+/* scrapbook cards */
+.syn-card {
+  position:relative;
+}
+.syn-card-inner {
+  opacity:0;
+  transform:translateY(14px);
+  transition:opacity 2s ease, transform 2s ease;
+}
+.syn-card.visible .syn-card-inner { opacity:1; transform:translateY(0); }
+
+.syn-paper {
+  font-family:var(--sans);
+  font-size:clamp(0.72rem,1.16vw,0.9rem);
+  line-height:1.35;
+  color:rgba(15,15,15,0.88);
+  padding:1.1rem 1.4rem 1.15rem;
+  text-align:center;
+  position:relative;
+  border-radius:10px;
+  background:
+    radial-gradient(ellipse at 20% 30%,rgba(160,130,80,0.10) 0%,transparent 60%),
+    radial-gradient(ellipse at 80% 70%,rgba(120,100,60,0.08) 0%,transparent 50%),
+    linear-gradient(135deg,#e8dfc4 0%,#ddd4b0 40%,#e4dbbf 70%,#d8cf9e 100%);
+  box-shadow: 2px 3px 0 rgba(15,15,15,0.12), 5px 5px 0 rgba(15,15,15,0.07), 8px 8px 0 rgba(15,15,15,0.04);
+}
+.syn-paper::after {
+  content:'';position:absolute;inset:0;pointer-events:none;border-radius:10px;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)' opacity='0.09'/%3E%3C/svg%3E");
+  mix-blend-mode:multiply;
+}
+
+/* scotch tape strip */
+.syn-tape {
+  position:absolute;
+  top:-11px;
+  width:68px;
+  height:20px;
+  background:rgba(220,210,170,0.55);
+  border-radius:1px;
+  box-shadow:0 1px 3px rgba(15,15,15,0.1);
+  z-index:2;
+}
+.syn-tape::after {
+  content:'';position:absolute;inset:0;
+  background:repeating-linear-gradient(90deg,rgba(255,255,255,0.18) 0,rgba(255,255,255,0.18) 1px,transparent 1px,transparent 4px);
+  border-radius:1px;
+}
+
+/* pin */
+.syn-pin {
+  position:absolute;
+  top:-10px;
+  width:14px;
+  height:14px;
+  border-radius:50%;
+  z-index:3;
+  box-shadow:0 2px 5px rgba(0,0,0,0.35);
+}
+</style>
+
+<div class="page" id="page7-synthesis" data-page="7" style="background:var(--red);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;padding:0">
+
+  <!-- grain overlay -->
+  <div style="position:absolute;inset:0;pointer-events:none;z-index:1;opacity:0.13;background-image:url(&quot;data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E&quot;);mix-blend-mode:multiply;"></div>
+
+  <div style="position:relative;z-index:2;width:100%;max-width:960px;padding:0 4rem;display:flex;flex-direction:row;align-items:center;justify-content:center;gap:5rem;">
+
+    <!-- LEFT: typewriter heading -->
+    <div style="flex:0 0 auto;max-width:320px;">
+      <div id="syn-intro-wrap">
+        <p id="syn-intro-text" style="color:white;"></p><span id="syn-cursor" style="background:rgba(255,255,255,0.8);"></span>
+      </div>
+    </div>
+
+    <!-- RIGHT: stacked cards column -->
+    <div style="display:flex;flex-direction:column;gap:1.4rem;align-items:center;">
+
+      <!-- Card 1 — tape left-of-centre, tilt left -->
+      <div class="syn-card" id="syn-s1" style="width:445px;transform:rotate(-1.8deg);">
+        <div class="syn-card-inner">
+        <div style="position:relative;padding-top:12px;">
+          <div class="syn-tape" style="left:50%;transform:translateX(-50%) rotate(-1deg);"></div>
+          <div class="syn-paper">
+            <strong style="color:var(--red)">I tend to think ambitiously and push far beyond the minimum expectation.</strong>
+          </div>
+        </div>
+        </div>
+      </div>
+
+      <!-- Card 2 — tape centre, tilt right, shifted right -->
+      <div class="syn-card" id="syn-s2" style="width:470px;transform:rotate(1.4deg);margin-left:56px;">
+        <div class="syn-card-inner">
+        <div style="position:relative;padding-top:12px;">
+          <div class="syn-tape" style="left:50%;transform:translateX(-50%) rotate(1deg);"></div>
+          <div class="syn-paper">
+            But ambition alone means very little without the ability to bring structure to ambiguity. <strong style="color:var(--red)">I'm able to break broad goals down into concrete priorities and milestones that make progress actually possible.</strong>
+          </div>
+        </div>
+        </div>
+      </div>
+
+      <!-- Card 3 — tape right side, slight left tilt -->
+      <div class="syn-card" id="syn-s3" style="width:455px;transform:rotate(-1deg);margin-left:-6px;">
+        <div class="syn-card-inner">
+        <div style="position:relative;padding-top:12px;">
+          <div class="syn-tape" style="left:50%;transform:translateX(-50%) rotate(-1.5deg);"></div>
+          <div class="syn-paper">
+            <strong style="color:var(--red)">And I approach unfamiliar problems with enough humility to learn whatever it takes to move things forward.</strong>
+          </div>
+        </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<script>
+(function(){
+  const page = document.getElementById('page7-synthesis');
+  if (!page) return;
+  let fired = false;
+
+  const fullText = 'Strip away everything else, and who I am boils down to this:';
+  let typeTimer = null;
+  let cardTimers = [];
+
+  function p7Skip(){
+    clearTimeout(typeTimer);
+    cardTimers.forEach(clearTimeout);
+    cardTimers = [];
+    const el = document.getElementById('syn-intro-text');
+    if(el) el.textContent = fullText;
+    const cursor = document.getElementById('syn-cursor');
+    if(cursor) cursor.style.display = 'none';
+    ['syn-s1','syn-s2','syn-s3'].forEach(id => {
+      const card = document.getElementById(id);
+      if(card){
+        const inner = card.querySelector('.syn-card-inner');
+        if(inner){ inner.style.transition = 'none'; inner.style.opacity = '1'; inner.style.transform = 'translateY(0)'; }
+        card.classList.add('visible');
+      }
+    });
+    animatedScrollGuard.markInactive(7);
+  }
+
+  // Register with guard (also wires page click → skip)
+  animatedScrollGuard.registerSkip(7, p7Skip, page);
+
+  function startTypewriter(cb){
+    const el = document.getElementById('syn-intro-text');
+    const cursor = document.getElementById('syn-cursor');
+    el.textContent = '';
+    cursor.style.display = 'inline-block';
+    let i = 0;
+    const speed = 38;
+    function type(){
+      if(i < fullText.length){
+        el.textContent += fullText[i];
+        i++;
+        typeTimer = setTimeout(type, speed);
+      } else {
+        setTimeout(()=>{ cursor.style.display='none'; if(cb) cb(); }, 500);
+      }
+    }
+    type();
+  }
+
+  function showCards(){
+    const delays = [0, 1400, 2800];
+    const ids = ['syn-s1','syn-s2','syn-s3'];
+    ids.forEach((id, i) => {
+      const t = setTimeout(()=>{
+        const el = document.getElementById(id);
+        if(el) el.classList.add('visible');
+        if(i === ids.length - 1){
+          // Animation fully done — deactivate guard
+          setTimeout(() => animatedScrollGuard.markInactive(7), 800);
+        }
+      }, delays[i]);
+      cardTimers.push(t);
+    });
+  }
+
+  function runSequence(){
+    startTypewriter(()=>{ showCards(); });
+  }
+
+  function resetSequence(){
+    clearTimeout(typeTimer);
+    cardTimers.forEach(clearTimeout);
+    cardTimers = [];
+    const el = document.getElementById('syn-intro-text');
+    if(el) el.textContent = '';
+    const cursor = document.getElementById('syn-cursor');
+    if(cursor) cursor.style.display = 'inline-block';
+    ['syn-s1','syn-s2','syn-s3'].forEach(id => {
+      const card = document.getElementById(id);
+      if(card){
+        card.classList.remove('visible');
+        const inner = card.querySelector('.syn-card-inner');
+        if(inner){
+          inner.style.transition = 'none';
+          inner.style.opacity = '';
+          inner.style.transform = '';
+          requestAnimationFrame(() => requestAnimationFrame(() => { inner.style.transition = ''; }));
+        }
+      }
+    });
+  }
+
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if(e.isIntersecting && !fired){
+        fired = true;
+        runSequence();
+        animatedScrollGuard.markActive(7);
+      }
+      if(!e.isIntersecting){
+        // Reset on any scroll away (forward or back)
+        fired = false;
+        resetSequence();
+        animatedScrollGuard.markInactive(7);
+      }
+    });
+  }, {threshold: 0.45});
+
+  obs.observe(page);
+})();
+</script>
+
+<!-- ═══ 8: OUTRO ═══ -->
+<div class="page" data-page="8" style="display:flex;align-items:center;justify-content:center;flex-direction:column;padding:3rem 4rem">
+  <div class="outro">
+    <div class="outro-big">Now you know a little more.</div>
+    <p class="outro-connect">If this resonates with you,<br>I'd love to connect!</p>
+    <div class="ctas">
+      <a class="cta-card cta-card-linkedin" href="https://www.linkedin.com/in/megan-b-a72b45186/" target="_blank">
+        <span class="cta-card-label">LinkedIn</span>
+        <span class="cta-card-value">Connect with me</span>
+      </a>
+      <a class="cta-card cta-card-email" href="mailto:megan.bon.0506@gmail.com">
+        <span class="cta-card-label">Email</span>
+        <span class="cta-card-value">megan.bon.0506@gmail.com</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+!-- ══════════════════════════════════════
+     EXHIBIT MODALS
+══════════════════════════════════════ -->
+
+<!-- EXHIBIT A: Pottery -->
+<div class="exhibit-modal" id="modal-a">
+  <div class="modal-inner">
+    <button class="modal-close" onclick="closeExhibit()">✕</button>
+    <div class="modal-pages" id="modal-a-pages">
+
+      <!-- A Page 1: Pottery intro -->
+      <div class="modal-page active">
+        <div class="modal-page-content sec3-page" style="border-radius:8px;overflow:hidden">
+          <div class="sec3-body" style="padding:3rem 4rem;margin-top:0;max-width:none;width:100%;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;height:100%">
+            <p style="font-family:var(--hand);font-size:1rem;color:rgba(255,255,255,0.65);margin-bottom:0.4rem">Exhibit A</p>
+            <p class="sec3-hero" style="font-size:clamp(1.8rem,3.5vw,3rem)">Recently, I tried pottery<br>painting for the first time.</p>
+            <div style="margin-top:1.5rem;display:flex;flex-direction:column;gap:0.8rem;max-width:580px">
+              <p class="sec3-mid"><strong>Have I done it before?</strong> No. <strong>Am I a painter?</strong> Also, no.</p>
+              <p class="sec3-mid"><strong>But did I decide that I wanted it to look good — like, ACTUALLY good?</strong></p>
+              <p class="sec3-punch-line"><em>Unfortunately, yes.</em></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- A Page 2: Polaroids -->
+      <div class="modal-page">
+        <div class="modal-page-content sec3-page" style="border-radius:8px;overflow:hidden">
+          <div class="sec3-body" style="padding:2.5rem 3rem;margin-top:0;max-width:none;width:100%;display:flex;flex-direction:column;align-items:center">
+            <p class="sec3-mid" style="font-size:clamp(1rem,1.8vw,1.4rem);font-weight:700;color:white;margin-bottom:2rem;text-align:center;max-width:680px">So I obsessed over things that, prior to that session,<br>weren't even a blip on my radar.</p>
+            <div style="display:flex;gap:1.5rem;justify-content:center;align-items:flex-end">
+              <div style="transform:rotate(-4deg);background:white;padding:9px 9px 9px 9px;box-shadow:2px 2px 0 rgba(15,15,15,0.12),5px 5px 0 rgba(15,15,15,0.07),8px 8px 0 rgba(15,15,15,0.04);display:inline-flex;flex-direction:column">
+                <img src="images/img-003-a015161352.png" style="width:160px;height:145px;object-fit:cover;object-position:center;display:block">
+                <div style="font-family:Caveat,cursive;font-size:1rem;color:rgba(15,15,15,0.82);text-align:center;height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.25;padding:0 6px">References</div>
+              </div>
+              <div style="transform:rotate(3deg);background:white;padding:9px 9px 9px 9px;box-shadow:2px 2px 0 rgba(15,15,15,0.12),5px 5px 0 rgba(15,15,15,0.07),8px 8px 0 rgba(15,15,15,0.04);display:inline-flex;flex-direction:column">
+                <img src="images/img-004-814672e74e.png" style="width:160px;height:145px;object-fit:cover;object-position:center;display:block">
+                <div style="font-family:Caveat,cursive;font-size:1rem;color:rgba(15,15,15,0.82);text-align:center;height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.25;padding:0 6px">Composition</div>
+              </div>
+              <div style="transform:rotate(-2deg);background:white;padding:9px 9px 9px 9px;box-shadow:2px 2px 0 rgba(15,15,15,0.12),5px 5px 0 rgba(15,15,15,0.07),8px 8px 0 rgba(15,15,15,0.04);display:inline-flex;flex-direction:column">
+                <img src="images/img-005-21c2fdfbe7.jpg" style="width:160px;height:145px;object-fit:cover;object-position:center;display:block">
+                <div style="font-family:Caveat,cursive;font-size:1rem;color:rgba(15,15,15,0.82);text-align:center;height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.25;padding:0 6px">Fine lines<br><span style="font-size:0.85rem;opacity:0.7">(I had to ask for a thinner brush)</span></div>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+
+      <!-- A Page 3: Result reveal -->
+      <div class="modal-page">
+        <div style="width:100%;min-height:480px;border-radius:8px;overflow:hidden;background:var(--red);display:flex;flex-direction:row">
+
+          <!-- LEFT: text column -->
+          <div style="flex:1;padding:2rem 1.5rem 2rem 2.5rem;display:flex;flex-direction:column;justify-content:center;gap:1rem;box-sizing:border-box">
+            <p style="font-family:'DM Sans',sans-serif;font-size:2rem;font-weight:700;color:white;margin:0">THE RESULT?</p>
+            <div id="modal-plate-cap" style="opacity:0;transition:opacity 0.8s ease 0.3s">
+              <p style="font-family:'DM Sans',sans-serif;font-size:1.7rem;font-weight:700;text-decoration:line-through;color:rgba(255,255,255,0.38);margin:0 0 0.3rem">Fine China</p>
+              <p style="font-family:'DM Sans',sans-serif;font-size:3rem;font-weight:700;color:white;line-height:0.9;margin:0 0 0.2rem">Demi-Fine China,</p>
+              <p style="font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:300;color:rgba(255,255,255,0.7);margin:0">if i do say so myself.</p>
+            </div>
+            <p id="modal-plate-hint" style="font-family:'DM Sans',sans-serif;font-size:0.8rem;color:rgba(255,255,255,0.35);margin:0;transition:opacity 0.3s">← click image to reveal</p>
+          </div>
+
+          <!-- RIGHT: polaroid column -->
+          <div style="flex:0 0 46%;display:flex;align-items:center;justify-content:center;padding:1.5rem;box-sizing:border-box">
+            <div id="modal-plate" onclick="revealResult()" style="position:relative;cursor:pointer;display:inline-block;background:white;padding:12px;box-shadow:6px 8px 30px rgba(0,0,0,0.4);transform:rotate(-1.5deg)">
+              <div id="modal-plate-overlay" style="position:absolute;inset:0;background:rgba(255,255,255,0.9);display:flex;align-items:center;justify-content:center;z-index:5;transition:opacity 0.5s ease">
+                <span style="font-family:'Caveat',cursive;font-size:1rem;color:rgba(15,15,15,0.55)">click to reveal</span>
+              </div>
+              <img id="modal-plate-img" src="images/img-006-83f8a4c2ce.jpg" style="width:280px;height:280px;object-fit:cover;display:block;opacity:0.12;transition:opacity 0.8s ease">
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <div class="modal-nav">
+      <button class="modal-btn" id="modal-a-prev" onclick="changePage('a',-1)">←</button>
+      <div class="modal-dots" id="modal-a-dots"></div>
+      <button class="modal-btn" id="modal-a-next" onclick="changePage('a',1)">→</button>
+    </div>
+  </div>
+</div>
+
+<!-- EXHIBIT B: Children's Book -->
+<div class="exhibit-modal" id="modal-b">
+  <div class="modal-inner">
+    <button class="modal-close" onclick="closeExhibit()">✕</button>
+    <div class="modal-pages" id="modal-b-pages">
+
+      <!-- B Page 1: Intro questions -->
+      <div class="modal-page active">
+        <div class="modal-page-content dd-page" style="border-radius:8px;display:flex;align-items:center">
+          <div style="display:flex;width:100%;height:100%;padding-top:0;align-items:center">
+            <!-- LEFT 60%: text -->
+            <div style="flex:0 0 60%;padding:3rem 2rem 3rem 3rem;display:flex;flex-direction:column;justify-content:center;border-right:1px solid rgba(15,15,15,0.08)">
+              <p class="dd-eyebrow">Exhibit B</p>
+              <h2 class="dd-title" style="font-size:clamp(1.4rem,2.8vw,2.4rem);margin-bottom:1rem">I noticed the same pattern when I decided to write a children's book for the first time.</h2>
+              <p class="dd-body" style="font-size:0.95rem;max-width:none">I knew from the get-go that I didn't just want to make a book that's good for an amateur. I wanted it to hold its own even when placed among others on a shelf.</p>
+            </div>
+            <!-- RIGHT 40%: square post-its -->
+            <div style="flex:1;padding:2.5rem 2rem;display:flex;flex-direction:column;justify-content:center;gap:1.5rem">
+              <p style="font-family:var(--hand);font-size:1rem;color:rgba(15,15,15,0.5)">I found myself asking:</p>
+              <div class="postit postit-yellow" style="transform:rotate(-2deg);width:180px;height:180px;display:flex;align-items:center;justify-content:center;text-align:center;font-size:0.85rem;padding:1rem;line-height:1.5;margin-left:8px">
+                <p>"How do I make something people would actually want to buy and keep?"</p>
+              </div>
+              <div class="postit postit-pink" style="transform:rotate(1.5deg);width:180px;height:180px;display:flex;align-items:center;justify-content:center;text-align:center;font-size:0.85rem;padding:1rem;line-height:1.5;margin-left:28px;margin-top:-20px">
+                <p>"How do I give this longevity and build something bigger than a single release?"</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- B Page 2: Going professional (4 col scrapbook) -->
+      <div class="modal-page">
+        <div class="modal-page-content dd-page" style="border-radius:8px;flex-direction:column;overflow:hidden">
+          <div style="padding:1.2rem 2rem 0.8rem;border-bottom:1px solid rgba(15,15,15,0.07);flex-shrink:0">
+            <h2 class="dd-title" style="font-size:1.3rem;margin-bottom:0.1rem">So I went from 0 to 100, and worked on it like a professional.</h2>
+          </div>
+          <div class="dd-row14" style="padding:0.5rem 1rem 0.75rem">
+            <div class="dd-col14">
+              <div class="dd-paper-tape"></div>
+              <div class="dd-sheet14">
+                <p class="dd-col-header14">market &amp; readers</p>
+                <div class="postit postit-pink" style="width:100%;aspect-ratio:1;display:flex;align-items:center;justify-content:center;text-align:center;font-size:0.75rem;margin-bottom:0.5rem"><p><strong>Identifying the target audience:</strong> While we need to appeal to children 4–6, parents are the actual purchasers — so we need to target both.</p></div>
+                <div class="postit postit-yellow" style="width:100%;aspect-ratio:1;display:flex;align-items:center;justify-content:center;text-align:center;font-size:0.75rem"><p style="font-size:0.9em"><strong>Finding our place in the market:</strong> Values like 'kindness' and 'respect' are over-saturated. Target newer-age values like vulnerability and independence — relevant to younger millennial parents.</p></div>
+              </div>
+            </div>
+            <div class="dd-col14">
+              <div class="dd-paper-tape"></div>
+              <div class="dd-sheet14 dd-paper-lined">
+                <p class="dd-col-header14" style="font-family:var(--hand)">story &amp; writing</p>
+                <p style="font-family:var(--sans);font-size:0.72rem;color:rgba(15,15,15,0.5);margin-bottom:0.4rem;line-height:1.4">Referencing popular books to guide language complexity and story length:</p>
+                <div style="display:flex;gap:6px;margin-bottom:0.5rem">
+                  <img src="images/img-007-33d55718dc.png" style="flex:1;height:90px;object-fit:contain;display:block">
+                  <img src="images/img-008-24ab7cc39a.png" style="width:auto;height:90px;object-fit:contain;display:block">
+                </div>
+                <div class="postit postit-cream" style="font-size:0.75rem;padding:0.6rem"><p>Short sentences. Repetition builds rhythm. One core emotion.</p></div>
+              </div>
+            </div>
+            <div class="dd-col14">
+              <div class="dd-paper-tape"></div>
+              <div class="dd-sheet14" style="justify-content:space-between">
+                <p class="dd-col-header14">visual direction</p>
+                <p style="font-family:var(--sans);font-size:0.68rem;color:rgba(15,15,15,0.5);margin-bottom:0.3rem;line-height:1.3;font-style:italic">Iterative process to both appeal to readers yet stand out.</p>
+                <div class="vis-iter-row" style="flex:1"><img src="images/img-009-54618f1fa1.jpg" class="vis-iter-img" style="width:90px;height:90px"><p class="vis-iter-cap" style="font-size:0.75rem">Rhino on two legs — more relatable.</p></div>
+                <div class="vis-iter-row" style="flex:1"><img src="images/img-010-8aef57e2ff.jpg" class="vis-iter-img" style="width:90px;height:90px"><p class="vis-iter-cap" style="font-size:0.75rem">Too cookie-cutter. Can we do something different?</p></div>
+                <div class="vis-iter-row" style="flex:1"><img src="images/img-011-85b0a9fb48.jpg" class="vis-iter-img" style="width:90px;height:90px"><p class="vis-iter-cap" style="font-size:0.75rem">Cracked it!</p></div>
+              </div>
+            </div>
+            <div class="dd-col14">
+              <div class="dd-paper-tape"></div>
+              <div class="dd-sheet14" style="justify-content:space-between">
+                <p class="dd-col-header14">product &amp; design</p>
+                <div class="postit postit-cream" style="font-size:0.75rem;padding:0.6rem;margin-bottom:0.4rem"><p style="font-weight:600;margin-bottom:3px">Obsessing over...</p><p>• Paper • Binding • Size • Finish • Price</p></div>
+                <div class="vis-iter-row" style="flex:1"><img src="images/img-012-394952f784.jpg" class="vis-iter-img" style="width:90px;height:90px"><p class="vis-iter-cap" style="font-size:0.75rem">Market research.</p></div>
+                <div class="vis-iter-row" style="flex:1"><img src="images/img-013-dae7a372cf.jpg" class="vis-iter-img" style="width:90px;height:90px"><p class="vis-iter-cap" style="font-size:0.75rem">Working with suppliers on samples.</p></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- B Page 3: Result -->
+      <div class="modal-page">
+        <div class="modal-page-content" style="border-radius:8px;overflow:hidden;display:flex;flex-direction:row;align-items:center;background:white;padding:0">
+
+          <!-- LEFT: text -->
+          <div style="flex:1;padding:3rem 2rem 3rem 3rem;display:flex;flex-direction:column;justify-content:center;gap:1.2rem">
+            <p style="font-family:var(--sans);font-size:2.2rem;font-weight:700;color:var(--red);line-height:1.05">THE RESULT?</p>
+            <p style="font-family:var(--sans);font-size:1.2rem;font-weight:700;color:var(--text);line-height:1.3">I sold out my first run of 100 books in <span style="color:var(--red)">two weeks.</span></p>
+            <p style="font-family:var(--sans);font-size:0.95rem;font-weight:300;color:var(--muted);line-height:1.7;max-width:280px">Through word-of-mouth alone. No ads, no paid promotion — just a product people genuinely wanted to share.</p>
+          </div>
+
+          <!-- RIGHT: book polaroid, white bg, bigger -->
+          <div style="flex:0 0 50%;display:flex;align-items:center;justify-content:center;height:100%;padding:2.5rem;background:white">
+            <div style="background:white;padding:12px;box-shadow:4px 6px 24px rgba(15,15,15,0.18);line-height:0;transform:rotate(1.5deg)">
+              <img src="images/img-014-6ec2136a3f.png" style="width:300px;height:300px;object-fit:cover;object-position:center;display:block">
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <div class="modal-nav">
+      <button class="modal-btn" id="modal-b-prev" onclick="changePage('b',-1)">←</button>
+      <div class="modal-dots" id="modal-b-dots"></div>
+      <button class="modal-btn" id="modal-b-next" onclick="changePage('b',1)">→</button>
+    </div>
+  </div>
+</div>
+
+<!-- EXHIBIT C: Website -->
+<div class="exhibit-modal" id="modal-c">
+  <div class="modal-inner">
+    <button class="modal-close" onclick="closeExhibit()">✕</button>
+    <div class="modal-pages" id="modal-c-pages">
+      <div class="modal-page active">
+        <div class="modal-page-content sec3-page" style="border-radius:8px;overflow:hidden">
+          <div class="sec3-body" style="padding:2rem 3rem;margin-top:0;max-width:none;width:100%;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;height:100%">
+            <p style="font-family:var(--hand);font-size:0.9rem;color:rgba(255,255,255,0.65);margin-bottom:0.3rem">Exhibit C</p>
+            <p class="sec3-hero" style="font-size:clamp(1.5rem,2.8vw,2.2rem);margin-bottom:1rem">Honestly, this website is probably another version of the same problem.</p>
+            <div style="display:flex;flex-direction:column;gap:0.5rem;max-width:580px">
+              <p class="sec3-mid" style="font-size:clamp(0.82rem,1.3vw,1rem)"><strong>I'd never built a site before.</strong></p>
+              <p class="sec3-mid" style="font-size:clamp(0.82rem,1.3vw,1rem)">I used Claude to help me build this one — and treated it<br>like any other project: with unreasonably high standards.</p>
+            </div>
+            <div style="margin-top:0.75rem;background:rgba(0,0,0,0.25);border-left:3px solid rgba(255,255,255,0.4);padding:0.8rem 1.4rem;max-width:400px;border-radius:0 2px 2px 0">
+              <p style="font-family:'Courier New',monospace;font-size:0.8rem;color:rgba(255,255,255,0.55);line-height:1.8">
+                <span style="color:rgba(255,255,255,0.3)">// first commit</span><br>
+                const megan = {<br>
+                &nbsp;&nbsp;experience: <span style="color:#f0dc8a">"zero"</span>,<br>
+                &nbsp;&nbsp;standards: <span style="color:#f0dc8a">"unreasonably high"</span>,<br>
+                &nbsp;&nbsp;shipped: <span style="color:#f0dc8a">true</span><br>
+                }
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-nav">
+      <button class="modal-btn" id="modal-c-prev" onclick="changePage('c',-1)">←</button>
+      <div class="modal-dots" id="modal-c-dots"></div>
+      <button class="modal-btn" id="modal-c-next" onclick="changePage('c',1)">→</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const scroller = document.getElementById('scroller');
+const pages = document.querySelectorAll('.page');
+const navEl = document.getElementById('nav');
+const sectionLabels = ['Intro','Pillars','0 to 100','Chaos Intro','Chaos Board','Chaos Insight','When I\'m in','Synthesis','Connect'];
+
+const dots = sectionLabels.map((lbl, i) => {
+  const d = document.createElement('button');
+  d.className = 'dot' + (i === 0 ? ' active' : '');
+  d.setAttribute('aria-label', lbl);
+  d.onclick = () => pages[i].scrollIntoView({ behavior: 'smooth' });
+  navEl.appendChild(d);
+  return d;
+});
+
+const redPages = new Set([2, 6, 7]);
+
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const idx = parseInt(e.target.dataset.page);
+      dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+      updateFolderTabs(idx);
+      navEl.classList.toggle('on-red', redPages.has(idx));
+    }
+  });
+}, { root: scroller, threshold: 0.5 });
+pages.forEach(p => obs.observe(p));
+
+function updateFolderTabs(pageIdx) {
+  const tabBar = document.getElementById('folderTabs');
+  const tabs = document.querySelectorAll('.ftab');
+  if (!tabBar) return;
+  tabBar.classList.toggle('tabs-visible', pageIdx >= 2 && pageIdx <= 6);
+  tabs.forEach(t => t.classList.remove('active'));
+  if (pageIdx === 2) tabs[0] && tabs[0].classList.add('active');
+  else if (pageIdx >= 3 && pageIdx <= 5) { tabs[1] && tabs[1].classList.add('active'); }
+  else if (pageIdx === 6) { tabs[2] && tabs[2].classList.add('active'); }
+}
+
+// Folder tab click
+const ftabs = document.querySelectorAll('.ftab');
+ftabs.forEach(tab => {
+  tab.addEventListener('click', () => {
+    ftabs.forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    const target = parseInt(tab.dataset.pageTarget);
+    if (!isNaN(target)) pages[target].scrollIntoView({ behavior: 'smooth' });
+  });
+  tab.addEventListener('mouseenter', () => {
+    if (!tab.classList.contains('active')) {
+      const activeTab = document.querySelector('.ftab.active');
+      if (activeTab) activeTab.classList.add('tab-suppressed');
+    }
+  });
+  tab.addEventListener('mouseleave', () => {
+    setTimeout(() => {
+      const hovered = document.querySelector('.ftab:hover');
+      if (!hovered || hovered.classList.contains('active')) {
+        document.querySelectorAll('.ftab').forEach(t => t.classList.remove('tab-suppressed'));
+      }
+    }, 20);
+  });
+});
+
+// ── MODAL STATE ──────────────────────────
+const modalState = {
+  a: { current: 0, total: 3 },
+  b: { current: 0, total: 3 },
+  c: { current: 0, total: 1 },
+};
+
+function openExhibit(key) {
+  const modal = document.getElementById('modal-' + key);
+  modal.classList.add('open');
+  document.getElementById('scroller').style.overflow = 'hidden';
+  document.body.style.overflow = 'hidden';
+  modalState[key].current = 0;
+  renderModal(key);
+}
+
+function closeExhibit() {
+  document.querySelectorAll('.exhibit-modal').forEach(m => m.classList.remove('open'));
+  document.getElementById('scroller').style.overflow = '';
+  document.body.style.overflow = '';
+}
+
+function changePage(key, dir) {
+  const s = modalState[key];
+  s.current = Math.max(0, Math.min(s.total - 1, s.current + dir));
+  renderModal(key);
+}
+
+function renderModal(key) {
+  const s = modalState[key];
+  const pages = document.querySelectorAll('#modal-' + key + '-pages .modal-page');
+  pages.forEach((p, i) => p.classList.toggle('active', i === s.current));
+  const dotsEl = document.getElementById('modal-' + key + '-dots');
+  dotsEl.innerHTML = '';
+  for (let i = 0; i < s.total; i++) {
+    const d = document.createElement('button');
+    d.className = 'modal-dot' + (i === s.current ? ' active' : '');
+    d.onclick = () => { s.current = i; renderModal(key); };
+    dotsEl.appendChild(d);
+  }
+  document.getElementById('modal-' + key + '-prev').disabled = s.current === 0;
+  document.getElementById('modal-' + key + '-next').disabled = s.current === s.total - 1;
+}
+
+document.querySelectorAll('.exhibit-modal').forEach(m => {
+  m.addEventListener('click', e => { if (e.target === m) closeExhibit(); });
+});
+
+function revealResult() {
+  const overlay = document.getElementById('modal-plate-overlay');
+  const img = document.getElementById('modal-plate-img');
+  const cap = document.getElementById('modal-plate-cap');
+  const hint = document.getElementById('modal-plate-hint');
+  if (overlay) overlay.style.opacity = '0'; overlay.style.pointerEvents = 'none';
+  if (img) img.style.opacity = '1';
+  if (cap) cap.style.opacity = '1';
+  if (hint) hint.style.opacity = '0';
+}
+
+['a','b','c'].forEach(k => renderModal(k));
+
+
+/* ═══ PAGE 4 CHAOS BOARD: cluster fade-ins + Real Answer reveal ═══ */
+(function(){
+  const chaosBoard = document.querySelector('[data-page="4"]');
+  if (!chaosBoard) return;
+
+  const clusterEls = chaosBoard.querySelectorAll('.cluster-fade');
+  const realAnswerWrapper = document.getElementById('realAnswerWrapper');
+  const backdrop = document.getElementById('pageDimBackdrop');
+
+  let clusterTimers = [];
+  let hasFadedIn = false;
+
+  function p4Skip() {
+    clusterTimers.forEach(clearTimeout);
+    clusterTimers = [];
+    clusterEls.forEach(el => {
+      el.style.transition = 'none';
+      el.classList.add('is-visible');
+      // Re-enable transition after a frame so future resets animate correctly
+      requestAnimationFrame(() => requestAnimationFrame(() => { el.style.transition = ''; }));
+    });
+    animatedScrollGuard.markInactive(4);
+  }
+
+  function p4Reset() {
+    clusterTimers.forEach(clearTimeout);
+    clusterTimers = [];
+    clusterEls.forEach(el => {
+      el.style.transition = 'none';
+      el.classList.remove('is-visible');
+      requestAnimationFrame(() => requestAnimationFrame(() => { el.style.transition = ''; }));
+    });
+    hasFadedIn = false;
+  }
+
+  // Register skip with the guard (also wires page click → skip)
+  animatedScrollGuard.registerSkip(4, p4Skip, chaosBoard);
+
+  // Cluster fade-in: trigger when page-4 enters viewport.
+  const fadeObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && !hasFadedIn) {
+        hasFadedIn = true;
+        clusterEls.forEach(el => {
+          const cluster = parseInt(el.getAttribute('data-cluster'), 10);
+          const delay = (cluster - 1) * 1000;
+          const t = setTimeout(() => el.classList.add('is-visible'), delay);
+          clusterTimers.push(t);
+        });
+        animatedScrollGuard.markActive(4);
+        // Auto-deactivate guard after animation finishes
+        const lastCluster = Math.max(...Array.from(clusterEls).map(el => parseInt(el.getAttribute('data-cluster'),10)));
+        const doneT = setTimeout(() => animatedScrollGuard.markInactive(4), (lastCluster - 1) * 1000 + 1200);
+        clusterTimers.push(doneT);
+      } else if (!entry.isIntersecting) {
+        p4Reset();
+        animatedScrollGuard.markInactive(4);
+      }
+    });
+  }, { threshold: 0.4 });
+  fadeObserver.observe(chaosBoard);
+
+  // Real Answer click-to-reveal.
+  if (realAnswerWrapper && backdrop) {
+    const wrapperParent = realAnswerWrapper.parentElement;
+
+    const closeReveal = () => {
+      realAnswerWrapper.classList.remove('revealed');
+      backdrop.classList.remove('is-active');
+      if (wrapperParent) wrapperParent.classList.remove('has-revealed-child');
+    };
+
+    const openReveal = () => {
+      realAnswerWrapper.classList.add('revealed');
+      backdrop.classList.add('is-active');
+      if (wrapperParent) wrapperParent.classList.add('has-revealed-child');
+    };
+
+    realAnswerWrapper.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (realAnswerWrapper.classList.contains('revealed')) closeReveal();
+      else openReveal();
+    });
+
+    backdrop.addEventListener('click', closeReveal);
+
+    const closeOnScroll = () => {
+      if (realAnswerWrapper.classList.contains('revealed')) closeReveal();
+    };
+    window.addEventListener('wheel', closeOnScroll, { passive: true });
+    window.addEventListener('touchmove', closeOnScroll, { passive: true });
+    window.addEventListener('keydown', (e) => {
+      if (!realAnswerWrapper.classList.contains('revealed')) return;
+      if (['Escape','ArrowDown','ArrowUp','PageDown','PageUp',' '].includes(e.key)) closeReveal();
+    });
+
+    const resetObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting && realAnswerWrapper.classList.contains('revealed')) closeReveal();
+      });
+    }, { threshold: 0.2 });
+    resetObserver.observe(chaosBoard);
+  }
+})();
+</script>
+</body>
+</html>
