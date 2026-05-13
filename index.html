@@ -1374,6 +1374,260 @@ body::before{
   pointer-events:auto;
 }
 
+
+/* ═══════════════════════════════════════════════════════════
+   MOBILE — max-width 768px
+   Strategy:
+   • Keep scroll-snap, one page = one screen
+   • Hero: stack vertically, passport shrinks to fit
+   • Pillars: cards in a row, tap to flip (no hover)
+   • Page 2 (0→100): reduce padding, accordion readable
+   • Page 3 (chaos intro): reflow text, note card full-width
+   • Page 4 (chaos board): vertical scroll list replacing dense grid
+   • Page 5 (insight): stack the two cards vertically
+   • Page 6 (mind map): static vertical accordion list
+   • Page 7 (synthesis): stack typewriter above cards
+   • Page 8 (outro): single column, larger buttons
+═══════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+
+  /* ── Global ── */
+  .page { padding: 2rem 1.5rem !important; }
+  .nav  { right: 0.75rem; }
+  .folder-tabs { padding: 0 0.75rem; }
+  .ftab span   { font-size: 0.65rem !important; }
+
+  /* ── PAGE 0: HERO ── */
+  .hero-page {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    justify-content: flex-start !important;
+    padding: 3rem 1.5rem 1.5rem !important;
+    gap: 1.5rem;
+    overflow: hidden !important;
+  }
+  .hero-left { flex: none; width: 100%; }
+  .hero-intro { font-size: 1.2rem !important; }
+  .hero-name-new { font-size: clamp(3rem,14vw,5rem) !important; margin-bottom: 0.8rem; }
+  .hero-sub { font-size: 0.88rem !important; max-width: 100% !important; }
+  .scroll-hint { margin-top: 1rem; }
+
+  /* Passport: shrink & un-rotate, sit below text */
+  .passport-outer {
+    flex: none;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: visible;
+  }
+  .passport-card {
+    position: relative !important;
+    right: auto !important;
+    width: 100% !important;
+    max-width: 360px;
+    transform: rotate(1deg) !important;
+    transform-origin: center !important;
+  }
+  .passport-outer:hover .passport-card,
+  .passport-card.expanded {
+    width: 100% !important;
+    max-width: 360px !important;
+    transform: rotate(0deg) scale(1.02) !important;
+    right: auto !important;
+  }
+  .pp-book { flex-direction: column !important; }
+  .pp-left { display: none !important; }
+  .pp-right { width: 100% !important; }
+  .pp-content { flex-direction: column !important; gap: 0.75rem !important; }
+  .pp-photo-col { width: 100% !important; flex-direction: row !important; align-items: flex-start; gap: 1rem; }
+  .pp-photo { width: 90px !important; height: 110px !important; min-height: unset !important; flex-shrink: 0; }
+  .pp-stamp { display: none !important; }
+  .pp-hint { display: none !important; }
+  .pp-mrz { font-size: 0.45rem !important; letter-spacing: 0.04em !important; }
+
+  /* ── PAGE 1: PILLARS ── */
+  /* Stack cards vertically so they're tappable one at a time */
+  .paper-cards {
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 2rem !important;
+  }
+  .paper-card {
+    width: 280px !important;
+    height: 160px !important;
+  }
+  .paper-cards .paper-card:nth-child(1),
+  .paper-cards .paper-card:nth-child(2),
+  .paper-cards .paper-card:nth-child(3) {
+    transform: none !important;
+    margin-top: 0 !important;
+  }
+  /* On mobile: tap = focus → flip. Keep hover rules but add touch */
+  .paper-card:focus .paper-front,
+  .paper-card:active .paper-front { transform: rotateY(-180deg) !important; }
+  .paper-card:focus .paper-back,
+  .paper-card:active .paper-back  { transform: rotateY(0deg) !important; }
+
+  /* ── PAGE 2: 0 → 100 (sec3) ── */
+  .sec3-body { padding: 4.5rem 1.5rem 2rem !important; }
+  .sec3-hero { font-size: clamp(1.5rem,6vw,2.2rem) !important; }
+  .sec3-mid  { font-size: 0.9rem !important; max-width: 100% !important; }
+  .xcard     { max-width: 100% !important; }
+  .fn-out    { padding: 0.75rem 1rem !important; }
+  .conclusion{ max-width: 100% !important; }
+  .case-wrap { grid-template-columns: 1fr !important; }
+  .inst-list { max-width: 100% !important; }
+  .heart-wrap{
+    grid-template-columns: 1fr !important;
+    border: 1px solid var(--line2) !important;
+  }
+
+  /* ── PAGE 3: CHAOS INTRO ── */
+  [data-page="3"] {
+    padding: 2.5rem 1.5rem !important;
+  }
+  [data-page="3"] h2 {
+    font-size: clamp(1.4rem,5.5vw,1.9rem) !important;
+  }
+  [data-page="3"] > div {
+    transform: none !important;
+    max-width: 100% !important;
+  }
+
+  /* ── PAGE 4: CHAOS BOARD — replace dense grid with vertical cards ── */
+  [data-page="4"] {
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    scroll-snap-align: start;
+    align-items: flex-start !important;
+    justify-content: flex-start !important;
+  }
+  /* Show clusters stacked; hide absolute-positioned overflow */
+  [data-page="4"] > div:first-child { height: 40px !important; flex-shrink: 0; }
+  [data-page="4"] .cluster-fade {
+    flex: none !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    margin-top: 0 !important;
+  }
+  /* Top half: stack vertically */
+  [data-page="4"] > div:nth-child(2) {
+    flex-direction: column !important;
+    padding: 0 1.25rem 1rem !important;
+    gap: 1.2rem !important;
+    overflow: visible !important;
+  }
+  /* Each sticky card: full width, no fixed px widths, no rotations */
+  [data-page="4"] [style*="flex:0 0 200px"],
+  [data-page="4"] [style*="flex:0 0 230px"],
+  [data-page="4"] [style*="flex:0 0 195px"],
+  [data-page="4"] [style*="flex:0 0 145px"],
+  [data-page="4"] [style*="flex:0 0 280px"],
+  [data-page="4"] [style*="width:280px"] {
+    flex: none !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    transform: none !important;
+  }
+  /* Bottom half: stack */
+  [data-page="4"] > div:nth-child(3) {
+    flex-direction: column !important;
+    padding: 0 1.25rem 1.5rem !important;
+    gap: 1rem !important;
+    overflow: visible !important;
+  }
+  /* Real answer card: full width */
+  .real-answer-wrapper { width: 100% !important; max-width: 100% !important; }
+  .real-answer-card { padding: 1.1rem 1.2rem !important; }
+
+  /* ── PAGE 5: INSIGHT ── */
+  [data-page="5"] > div {
+    padding: 2rem 1.5rem !important;
+    gap: 1.5rem !important;
+  }
+  [data-page="5"] > div > p:first-child {
+    font-size: clamp(1.3rem,5vw,1.8rem) !important;
+  }
+  /* Two cards: stack vertically, remove rotations */
+  [data-page="5"] > div > div {
+    flex-direction: column !important;
+    gap: 1.5rem !important;
+  }
+  [data-page="5"] [style*="flex:1;min-width:280px"] {
+    min-width: 0 !important;
+    max-width: 100% !important;
+  }
+  [data-page="5"] [style*="transform:rotate"] {
+    transform: none !important;
+  }
+
+  /* ── PAGE 6: MIND MAP — static accordion on mobile ── */
+  #page6 { overflow-y: auto !important; align-items: flex-start !important; padding: 0 !important; }
+  /* Hide the SVG canvas and JS-positioned nodes */
+  #p6-svg       { display: none !important; }
+  #p6-map       { position: relative !important; inset: auto !important;
+                  width: 100% !important; height: auto !important;
+                  display: flex !important; flex-direction: column !important;
+                  gap: 0 !important; padding: 1rem 1.25rem 2rem !important; }
+  /* Center card: static block */
+  #p6-center    { position: relative !important; top: auto !important; left: auto !important;
+                  transform: none !important; margin-bottom: 1.25rem; align-self: center; }
+  /* Headline */
+  #page6 > div:first-child { display: none !important; } /* hide JS-headline, shown in center card */
+  /* Function nodes: show as stacked pills */
+  .p6-fn-node   { display: block !important; position: relative !important;
+                  top: auto !important; left: auto !important;
+                  opacity: 1 !important; margin-bottom: 0.5rem !important; }
+  .p6-fn-pill   { border-radius: 8px !important; padding: 0.75rem 1rem !important;
+                  font-size: 0.88rem !important; }
+  /* Subnodes: show inline beneath each fn node */
+  .p6-sub-node  { display: block !important; position: relative !important;
+                  top: auto !important; left: auto !important;
+                  opacity: 1 !important; transform: none !important;
+                  margin: 0.3rem 0 0.3rem 1.5rem !important; }
+  .p6-sub-pill  { font-size: 0.8rem !important; padding: 0.4rem 0.75rem !important; }
+  /* Cue: hide (not needed in list view) */
+  #p6-cue       { display: none !important; }
+  /* Popup: reposition for mobile */
+  #p6-popup     { max-width: calc(100vw - 2rem) !important; position: fixed !important;
+                  bottom: 1rem !important; left: 1rem !important; top: auto !important; }
+
+  /* ── PAGE 7: SYNTHESIS ── */
+  #page7-synthesis > div {
+    flex-direction: column !important;
+    padding: 2rem 1.5rem !important;
+    gap: 2rem !important;
+    align-items: flex-start !important;
+  }
+  #page7-synthesis > div > div:first-child {
+    max-width: 100% !important;
+  }
+  #syn-intro-text { font-size: clamp(1.2rem,5vw,1.6rem) !important; }
+  /* Cards: full width, no fixed px width, no margin offsets */
+  .syn-card {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-left: 0 !important;
+    transform: none !important;
+  }
+  #syn-s2 { margin-left: 0 !important; }
+
+  /* ── PAGE 8: OUTRO ── */
+  .outro { max-width: 100% !important; padding: 0 0.5rem; }
+  .outro-big     { font-size: 0.95rem !important; }
+  .outro-connect { font-size: clamp(1.4rem,6vw,2rem) !important; margin-bottom: 1.75rem !important; }
+  .ctas          { flex-direction: column !important; align-items: center !important; gap: 1rem !important; }
+  .cta-card      { width: 80vw !important; max-width: 320px !important;
+                   transform: none !important; }
+  .cta-card-linkedin,
+  .cta-card-email { transform: none !important; }
+  .cta-card-linkedin:hover,
+  .cta-card-email:hover { transform: translateY(-2px) !important; }
+
+}
 </style>
 </head>
 <body>
@@ -2455,18 +2709,26 @@ const animatedScrollGuard = (function(){
   // Register with guard (also wires page click → skip)
   animatedScrollGuard.registerSkip(6, p6Skip, document.getElementById('page6'));
 
+  const isMobile = () => window.innerWidth <= 768;
+
   /* ── OBSERVE: trigger init when page scrolls into view ── */
   const obs = new IntersectionObserver((entries) => {
     entries.forEach(e => {
       if (e.isIntersecting && !initiated){
         initiated = true;
         p6AnimDone = false;
-        init();
-        // Mark guard inactive after all nodes have appeared
-        const doneDuration = 400 + fnKeys.length * 500 + 400 + 500;
-        const doneT = setTimeout(() => { p6AnimDone = true; animatedScrollGuard.markInactive(6); }, doneDuration);
-        p6SkipTimers.push(doneT);
-        animatedScrollGuard.markActive(6);
+        if (isMobile()) {
+          // Mobile: skip animation entirely, show all nodes statically
+          init();
+          p6Skip();
+        } else {
+          init();
+          // Mark guard inactive after all nodes have appeared
+          const doneDuration = 400 + fnKeys.length * 500 + 400 + 500;
+          const doneT = setTimeout(() => { p6AnimDone = true; animatedScrollGuard.markInactive(6); }, doneDuration);
+          p6SkipTimers.push(doneT);
+          animatedScrollGuard.markActive(6);
+        }
       }
       if (!e.isIntersecting){
         // Reset on any scroll away (forward or back)
@@ -2750,8 +3012,12 @@ const animatedScrollGuard = (function(){
     entries.forEach(e => {
       if(e.isIntersecting && !fired){
         fired = true;
-        runSequence();
-        animatedScrollGuard.markActive(7);
+        if (window.innerWidth <= 768) {
+          p7Skip(); // show everything instantly on mobile
+        } else {
+          runSequence();
+          animatedScrollGuard.markActive(7);
+        }
       }
       if(!e.isIntersecting){
         // Reset on any scroll away (forward or back)
